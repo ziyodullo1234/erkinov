@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -236,6 +237,10 @@
             border-color: #4b5563 !important;
         }
         
+        .dark-mode .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        
         .dark-mode .stars-bg {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 35%, #24243e 100%);
             opacity: 1;
@@ -333,21 +338,73 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Subtle animations */
-        .float {
-            animation: none;
+        /* Like/Dislike buttons */
+        .like-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .float-delayed {
-            animation: none;
+        .dark-mode .like-section {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        /* Text animations */
-        .typewriter {
-            border-right: none;
+        .like-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        /* Simple entrance animations */
+        .like-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+        
+        .like-btn:active::before {
+            width: 120%;
+            height: 120%;
+        }
+        
+        .like-btn.liked {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+        }
+        
+        .dislike-btn.disliked {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        /* Comments styles */
+        .comment-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode .comment-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Animation classes */
         .fade-in {
             opacity: 1;
             transform: none;
@@ -363,7 +420,7 @@
             transform: none;
         }
         
-        /* Simple hover effects */
+        /* Hover effects */
         .hover-scale {
             transition: all 0.2s ease;
         }
@@ -373,7 +430,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         
-        /* Custom button styles */
+        /* Button styles */
         .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
             transition: all 0.3s ease;
@@ -401,29 +458,22 @@
             box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
         }
         
-        /* Remove particles */
-        .particle {
-            display: none;
-        }
-        
-        /* Simple shadow */
-        .glow {
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
-        }
-        
-        /* Simple scroll indicator */
-        .scroll-indicator {
-            animation: none;
-        }
-        
-        /* Form focus effects */
+        /* Form styles */
         .form-input {
             transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+        }
+        
+        .dark-mode .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
         .form-input:focus {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
         }
         
         /* Gradient text */
@@ -434,10 +484,14 @@
             background-clip: text;
         }
         
-        /* Navigation blur effect */
+        /* Navigation styles */
         .nav-blur {
             backdrop-filter: blur(20px);
             background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .dark-mode .nav-blur {
+            background: rgba(26, 26, 46, 0.95);
         }
         
         /* Custom scrollbar */
@@ -456,6 +510,29 @@
         
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        /* Success animation */
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
@@ -494,6 +571,7 @@
                     <a href="#hobbies" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Hobbiylar</a>
                     <a href="#travel" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sayohatlar</a>
                     <a href="#gallery" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Rasmlar</a>
+                    <a href="#comments" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sharhlar</a>
                     <a href="#contact" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Aloqa</a>
                 </div>
                 <button class="md:hidden text-gray-700 hover:text-purple-600 transition-colors">
@@ -505,7 +583,6 @@
 
     <!-- Hero Section -->
     <section id="home" class="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
-        
         <div class="container mx-auto px-6 text-center relative z-10">
             <!-- Main Title -->
             <div class="fade-in mb-6" style="animation-delay: 0.4s;">
@@ -533,8 +610,8 @@
             </div>
             
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white">
+                <i class="fas fa-chevron-down text-2xl pulse"></i>
             </div>
         </div>
     </section>
@@ -562,7 +639,7 @@
                             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
                             <div class="relative z-10">
                                 <div class="text-center mb-8">
-                                    <div class="w-32 h-32 mx-auto mb-6 glass rounded-full flex items-center justify-center float">
+                                    <div class="w-32 h-32 mx-auto mb-6 glass rounded-full flex items-center justify-center">
                                         <i class="fas fa-user-graduate text-5xl text-white"></i>
                                     </div>
                                     <h3 class="text-3xl font-bold mb-2 playfair">Erkinov Ziyodullo</h3>
@@ -629,8 +706,32 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Like/Dislike Section -->
+                <div class="mt-12">
+                    <div class="like-section rounded-2xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Bu bo'lim sizga yoqdimi?</h4>
+                                <p class="text-gray-600">Fikringizni bildiring</p>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button class="like-btn bg-gray-200 hover:bg-green-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2" 
+                                        onclick="handleLike('about', this)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span class="like-count">0</span>
+                                    <span>Yoqdi</span>
+                                </button>
+                                <button class="dislike-btn bg-gray-200 hover:bg-red-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2"
+                                        onclick="handleDislike('about', this)">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span class="dislike-count">0</span>
+                                    <span>Yoqmadi</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -771,6 +872,32 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Like/Dislike Section -->
+                <div class="mt-12">
+                    <div class="like-section rounded-2xl p-6 bg-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Kitob o'qish haqidagi ma'lumot sizga yoqdimi?</h4>
+                                <p class="text-gray-600">Fikringizni bildiring</p>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button class="like-btn bg-gray-200 hover:bg-green-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2" 
+                                        onclick="handleLike('books', this)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span class="like-count">0</span>
+                                    <span>Yoqdi</span>
+                                </button>
+                                <button class="dislike-btn bg-gray-200 hover:bg-red-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2"
+                                        onclick="handleDislike('books', this)">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span class="dislike-count">0</span>
+                                    <span>Yoqmadi</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -792,8 +919,8 @@
             <div class="max-w-7xl mx-auto">
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- Futbol -->
-                    <div class="fade-in" style="animation-delay: 0.2s;">
-                        <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                    <div class="fade-in hover-scale" style="animation-delay: 0.2s;">
+                        <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-3xl p-8 text-white h-full relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
                             <div class="relative z-10">
                                 <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
@@ -823,8 +950,8 @@
                     </div>
                     
                     <!-- Shaxmat -->
-                    <div class="fade-in" style="animation-delay: 0.4s;">
-                        <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                    <div class="fade-in hover-scale" style="animation-delay: 0.4s;">
+                        <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl p-8 text-white h-full relative overflow-hidden">
                             <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-16 -translate-x-16"></div>
                             <div class="relative z-10">
                                 <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
@@ -854,8 +981,8 @@
                     </div>
                     
                     <!-- Counter Strike 1.6 -->
-                    <div class="fade-in" style="animation-delay: 0.6s;">
-                        <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                    <div class="fade-in hover-scale" style="animation-delay: 0.6s;">
+                        <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-8 text-white h-full relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 -translate-x-16"></div>
                             <div class="relative z-10">
                                 <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
@@ -895,6 +1022,32 @@
                             shaxmat esa aqlimni rivojlantiradi, Counter Strike 1.6 esa do'stlar bilan qiziqarli vaqt o'tkazishga yordam beradi. 
                             Bu hobbiylar menga muvozanatli hayot kechirish imkonini beradi.
                         </p>
+                    </div>
+                </div>
+                
+                <!-- Like/Dislike Section -->
+                <div class="mt-12">
+                    <div class="like-section rounded-2xl p-6 bg-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Hobbiylarim sizga qiziqmi?</h4>
+                                <p class="text-gray-600">Fikringizni bildiring</p>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button class="like-btn bg-gray-200 hover:bg-green-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2" 
+                                        onclick="handleLike('hobbies', this)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span class="like-count">0</span>
+                                    <span>Yoqdi</span>
+                                </button>
+                                <button class="dislike-btn bg-gray-200 hover:bg-red-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2"
+                                        onclick="handleDislike('hobbies', this)">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span class="dislike-count">0</span>
+                                    <span>Yoqmadi</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1048,6 +1201,32 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Like/Dislike Section -->
+                <div class="mt-12">
+                    <div class="like-section rounded-2xl p-6 bg-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Sayohatlarim sizga qiziqmi?</h4>
+                                <p class="text-gray-600">Fikringizni bildiring</p>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button class="like-btn bg-gray-200 hover:bg-green-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2" 
+                                        onclick="handleLike('travel', this)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span class="like-count">0</span>
+                                    <span>Yoqdi</span>
+                                </button>
+                                <button class="dislike-btn bg-gray-200 hover:bg-red-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2"
+                                        onclick="handleDislike('travel', this)">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span class="dislike-count">0</span>
+                                    <span>Yoqmadi</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1172,6 +1351,126 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Like/Dislike Section -->
+                <div class="mt-12">
+                    <div class="like-section rounded-2xl p-6 bg-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Rasm galereya sizga yoqdimi?</h4>
+                                <p class="text-gray-600">Fikringizni bildiring</p>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button class="like-btn bg-gray-200 hover:bg-green-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2" 
+                                        onclick="handleLike('gallery', this)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span class="like-count">0</span>
+                                    <span>Yoqdi</span>
+                                </button>
+                                <button class="dislike-btn bg-gray-200 hover:bg-red-500 text-gray-700 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2"
+                                        onclick="handleDislike('gallery', this)">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span class="dislike-count">0</span>
+                                    <span>Yoqmadi</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section id="comments" class="py-24 bg-gradient-to-br from-indigo-50 to-purple-100 relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-indigo-600 font-semibold text-lg tracking-wide uppercase">💬 Fikrlaringiz</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Sharhlar</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+                    <p class="text-xl text-gray-600 mt-6">Fikr-mulohazalaringizni yozing, men ularni o'qib chiqaman!</p>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Comment Form -->
+                <div class="bg-white rounded-3xl shadow-2xl p-8 mb-12 hover-scale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-pen-alt text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 playfair">Sharh yozing</h3>
+                            <p class="text-gray-600">Fikringizni bizga bildiring</p>
+                        </div>
+                    </div>
+                    
+                    <form id="commentForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Ismingiz *</label>
+                                <input type="text" id="commentName" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none"
+                                       placeholder="Ismingizni kiriting">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                                <input type="email" id="commentEmail" 
+                                       class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none"
+                                       placeholder="email@example.com">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Sharhingiz *</label>
+                            <textarea id="commentText" required rows="5" 
+                                      class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none resize-none"
+                                      placeholder="Fikringizni yozing..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full md:w-auto px-8 py-4 rounded-xl text-white font-semibold text-lg">
+                            <i class="fas fa-paper-plane mr-3"></i>Sharh yuborish
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Comments Display -->
+                <div class="space-y-6" id="commentsList">
+                    <!-- Comments will be displayed here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="emptyComments" class="text-center py-12 bg-white rounded-3xl shadow-lg">
+                    <i class="fas fa-comments text-6xl text-gray-300 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 playfair">Hali sharhlar yo'q</h3>
+                    <p class="text-gray-600 text-lg">Birinchi sharh yozuvchi bo'ling!</p>
+                </div>
+                
+                <!-- Comments Stats -->
+                <div class="mt-12 bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-3xl font-bold text-center text-gray-800 mb-8 playfair">Sharh Statistikasi</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl">
+                            <i class="fas fa-comments text-4xl text-indigo-600 mb-4"></i>
+                            <div class="text-3xl font-bold text-gray-800 mb-2" id="totalComments">0</div>
+                            <p class="text-gray-600">Jami sharhlar</p>
+                        </div>
+                        <div class="text-center p-6 bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
+                            <i class="fas fa-thumbs-up text-4xl text-green-600 mb-4"></i>
+                            <div class="text-3xl font-bold text-gray-800 mb-2" id="totalLikes">0</div>
+                            <p class="text-gray-600">Jami yoqganlar</p>
+                        </div>
+                        <div class="text-center p-6 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl">
+                            <i class="fas fa-users text-4xl text-purple-600 mb-4"></i>
+                            <div class="text-3xl font-bold text-gray-800 mb-2" id="uniqueUsers">0</div>
+                            <p class="text-gray-600">Foydalanuvchilar</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1180,8 +1479,8 @@
     <section id="contact" class="py-24 contact-gradient relative overflow-hidden">
         <!-- Background Elements -->
         <div class="absolute inset-0">
-            <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl float"></div>
-            <div class="absolute bottom-0 right-0 w-72 h-72 bg-purple-300/10 rounded-full blur-3xl float-delayed"></div>
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-72 h-72 bg-purple-300/10 rounded-full blur-3xl"></div>
         </div>
         
         <div class="container mx-auto px-6 relative z-10">
@@ -1314,6 +1613,7 @@
                 
                 <div class="border-t border-gray-800 pt-8">
                     <p class="text-gray-500">&copy; 2025 Erkinov Ziyodullo. Barcha huquqlar himoyalangan.</p>
+                    <p class="text-gray-600 text-sm mt-2">Sharhlar va like'lar mahalliy xotirada saqlanadi</p>
                 </div>
             </div>
         </div>
@@ -1324,6 +1624,255 @@
         const typingElement = document.getElementById('typing-text');
         if (typingElement) {
             typingElement.textContent = "Shaxsiy web sayt blogi";
+        }
+        
+        // Like/Dislike data storage
+        let likesData = JSON.parse(localStorage.getItem('likesData')) || {};
+        let commentsData = JSON.parse(localStorage.getItem('commentsData')) || [];
+        
+        // Initialize like data structure
+        const sections = ['about', 'books', 'hobbies', 'travel', 'gallery'];
+        sections.forEach(section => {
+            if (!likesData[section]) {
+                likesData[section] = { likes: 0, dislikes: 0 };
+            }
+        });
+        
+        // Handle like button click
+        window.handleLike = function(section, button) {
+            const userKey = `user_liked_${section}`;
+            const dislikeUserKey = `user_disliked_${section}`;
+            const hasLiked = localStorage.getItem(userKey);
+            const hasDisliked = localStorage.getItem(dislikeUserKey);
+            
+            if (hasLiked) {
+                // Remove like
+                likesData[section].likes--;
+                localStorage.removeItem(userKey);
+                button.classList.remove('liked');
+                showNotification('Like o\'chirildi!', 'info');
+            } else {
+                // Add like
+                likesData[section].likes++;
+                localStorage.setItem(userKey, 'true');
+                button.classList.add('liked');
+                
+                // Remove dislike if exists
+                if (hasDisliked) {
+                    likesData[section].dislikes--;
+                    localStorage.removeItem(dislikeUserKey);
+                    const dislikeBtn = button.parentElement.querySelector('.dislike-btn');
+                    dislikeBtn.classList.remove('disliked');
+                }
+                
+                showNotification('Rahmat! Like qo\'shildi!', 'success');
+            }
+            
+            updateLikeDisplay();
+            saveLikesData();
+        };
+        
+        // Handle dislike button click
+        window.handleDislike = function(section, button) {
+            const userKey = `user_disliked_${section}`;
+            const likeUserKey = `user_liked_${section}`;
+            const hasDisliked = localStorage.getItem(userKey);
+            const hasLiked = localStorage.getItem(likeUserKey);
+            
+            if (hasDisliked) {
+                // Remove dislike
+                likesData[section].dislikes--;
+                localStorage.removeItem(userKey);
+                button.classList.remove('disliked');
+                showNotification('Dislike o\'chirildi!', 'info');
+            } else {
+                // Add dislike
+                likesData[section].dislikes++;
+                localStorage.setItem(userKey, 'true');
+                button.classList.add('disliked');
+                
+                // Remove like if exists
+                if (hasLiked) {
+                    likesData[section].likes--;
+                    localStorage.removeItem(likeUserKey);
+                    const likeBtn = button.parentElement.querySelector('.like-btn');
+                    likeBtn.classList.remove('liked');
+                }
+                
+                showNotification('Fikringiz qabul qilindi!', 'info');
+            }
+            
+            updateLikeDisplay();
+            saveLikesData();
+        };
+        
+        // Update like counts in UI
+        function updateLikeDisplay() {
+            sections.forEach(section => {
+                const likeBtn = document.querySelector(`button[onclick="handleLike('${section}', this)"]`);
+                const dislikeBtn = document.querySelector(`button[onclick="handleDislike('${section}', this)"]`);
+                
+                if (likeBtn && dislikeBtn) {
+                    likeBtn.querySelector('.like-count').textContent = likesData[section].likes;
+                    dislikeBtn.querySelector('.dislike-count').textContent = likesData[section].dislikes;
+                    
+                    // Update user's current state
+                    const hasLiked = localStorage.getItem(`user_liked_${section}`);
+                    const hasDisliked = localStorage.getItem(`user_disliked_${section}`);
+                    
+                    if (hasLiked) likeBtn.classList.add('liked');
+                    else likeBtn.classList.remove('liked');
+                    
+                    if (hasDisliked) dislikeBtn.classList.add('disliked');
+                    else dislikeBtn.classList.remove('disliked');
+                }
+            });
+            
+            // Update total likes in stats
+            const totalLikes = Object.values(likesData).reduce((sum, data) => sum + data.likes, 0);
+            const totalLikesElement = document.getElementById('totalLikes');
+            if (totalLikesElement) {
+                totalLikesElement.textContent = totalLikes;
+            }
+        }
+        
+        // Save likes data to localStorage
+        function saveLikesData() {
+            localStorage.setItem('likesData', JSON.stringify(likesData));
+        }
+        
+        // Comments functionality
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('commentName').value.trim();
+            const email = document.getElementById('commentEmail').value.trim();
+            const text = document.getElementById('commentText').value.trim();
+            
+            if (!name || !text) {
+                showNotification('Iltimos, majburiy maydonlarni to\'ldiring!', 'error');
+                return;
+            }
+            
+            const comment = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                text: text,
+                date: new Date().toLocaleDateString('uz-UZ'),
+                time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+            };
+            
+            commentsData.unshift(comment);
+            saveCommentsData();
+            displayComments();
+            
+            // Reset form
+            this.reset();
+            showNotification('Sharhingiz muvaffaqiyatli qo\'shildi!', 'success');
+        });
+        
+        // Display comments
+        function displayComments() {
+            const commentsList = document.getElementById('commentsList');
+            const emptyComments = document.getElementById('emptyComments');
+            
+            if (commentsData.length === 0) {
+                emptyComments.style.display = 'block';
+                commentsList.style.display = 'none';
+                return;
+            }
+            
+            emptyComments.style.display = 'none';
+            commentsList.style.display = 'block';
+            
+            commentsList.innerHTML = commentsData.map(comment => `
+                <div class="comment-card p-6 rounded-2xl bounce-in">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-bold text-lg">${comment.name.charAt(0).toUpperCase()}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-gray-800 text-lg">${comment.name}</h4>
+                                <div class="text-sm text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>${comment.date}
+                                    <i class="fas fa-clock ml-3 mr-1"></i>${comment.time}
+                                </div>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed">${comment.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update comments stats
+            updateCommentsStats();
+        }
+        
+        // Update comments statistics
+        function updateCommentsStats() {
+            const totalCommentsElement = document.getElementById('totalComments');
+            const uniqueUsersElement = document.getElementById('uniqueUsers');
+            
+            if (totalCommentsElement) {
+                totalCommentsElement.textContent = commentsData.length;
+            }
+            
+            if (uniqueUsersElement) {
+                const uniqueUsers = new Set(commentsData.map(comment => comment.name.toLowerCase())).size;
+                uniqueUsersElement.textContent = uniqueUsers;
+            }
+        }
+        
+        // Save comments data to localStorage
+        function saveCommentsData() {
+            localStorage.setItem('commentsData', JSON.stringify(commentsData));
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-24 right-6 px-6 py-4 rounded-xl text-white font-semibold z-50 shadow-2xl transform translate-x-full transition-all duration-300`;
+            
+            switch (type) {
+                case 'success':
+                    notification.classList.add('bg-green-500');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500');
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
         }
         
         // Global yulduzlar yaratish
@@ -1373,7 +1922,6 @@
             
             if (body.classList.contains('dark-mode')) {
                 toggleIcon.className = 'fas fa-sun';
-                // Dark mode: Oy charaqlasin, yulduzlar ko'rinsin
                 moon.style.opacity = '1';
                 moon.style.visibility = 'visible';
                 starsContainer.style.opacity = '1';
@@ -1381,7 +1929,6 @@
                 localStorage.setItem('darkMode', 'enabled');
             } else {
                 toggleIcon.className = 'fas fa-moon';
-                // Light mode: Oy charaqlamasdan ko'rinsin, yulduzlar yashirilsin
                 moon.style.opacity = '1';
                 moon.style.visibility = 'visible';
                 starsContainer.style.opacity = '0';
@@ -1390,7 +1937,7 @@
             }
         }
         
-        // Dark mode ni yuklash
+        // Load dark mode
         function loadDarkMode() {
             const darkMode = localStorage.getItem('darkMode');
             const body = document.body;
@@ -1401,13 +1948,11 @@
             if (darkMode === 'enabled') {
                 body.classList.add('dark-mode');
                 toggleIcon.className = 'fas fa-sun';
-                // Dark mode: Oy charaqlasin, yulduzlar ko'rinsin
                 moon.style.opacity = '1';
                 moon.style.visibility = 'visible';
                 starsContainer.style.opacity = '1';
                 starsContainer.style.visibility = 'visible';
             } else {
-                // Light mode: Oy oddiy ko'rinsin, yulduzlar yashirilsin
                 moon.style.opacity = '1';
                 moon.style.visibility = 'visible';
                 starsContainer.style.opacity = '0';
@@ -1417,11 +1962,11 @@
         
         // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', () => {
-            // Yulduzlarni yaratamiz
             createGlobalStars();
             loadDarkMode();
+            updateLikeDisplay();
+            displayComments();
             
-            // Dark mode tugmasini ulash
             document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
         });
         
@@ -1449,11 +1994,7 @@
             });
         });
         
-        // Animations removed for simplicity
-        
-
-        
-        // Add form validation feedback
+        // Form validation feedback
         const inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(input => {
             input.addEventListener('invalid', function() {
