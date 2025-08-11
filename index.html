@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erkinov Ziyodullo - Shaxsiy Blog Web Sayti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Modern gradient backgrounds */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 35%, #24243e 100%);
+            position: relative;
+        }
+        
+        .card-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .contact-gradient {
+            background: linear-gradient(135deg, #2D1B69 0%, #11998e 100%);
+        }
+        
+        /* Global stars background */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            transition: all 0.5s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* Yulduzlar animatsiyasi */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.4); }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, transparent);
+            border-radius: 50%;
+            animation: shoot 4s linear infinite;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+        }
+        
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Oy animatsiyasi */
+        .moon {
+            position: fixed;
+            top: 80px;
+            right: 100px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff8dc, #ffd700, #daa520);
+            box-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.3), 
+                0 0 60px rgba(255, 215, 0, 0.2),
+                inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            transition: all 0.5s ease;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        @keyframes moonGlow {
+            0% {
+                box-shadow: 
+                    0 0 60px rgba(255, 215, 0, 0.8), 
+                    0 0 120px rgba(255, 215, 0, 0.4),
+                    inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                box-shadow: 
+                    0 0 100px rgba(255, 215, 0, 1), 
+                    0 0 180px rgba(255, 215, 0, 0.6),
+                    inset -8px -8px 16px rgba(0, 0, 0, 0.15);
+                transform: scale(1.15) rotate(5deg);
+            }
+        }
+        
+        /* Moon craters - more realistic */
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 20px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.15);
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .moon::after {
+            content: '';
+            position: absolute;
+            bottom: 30px;
+            right: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.12);
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Additional moon details */
+        .moon-detail {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+        }
+        
+        .moon-detail:nth-child(1) {
+            top: 15px;
+            right: 30px;
+            width: 8px;
+            height: 8px;
+        }
+        
+        .moon-detail:nth-child(2) {
+            bottom: 15px;
+            left: 15px;
+            width: 6px;
+            height: 6px;
+        }
+        
+        /* Dark mode moon enhancement */
+        .dark-mode .moon {
+            background: radial-gradient(circle at 30% 30%, #fffacd, #ffd700, #ffb347, #daa520);
+            box-shadow: 
+                0 0 80px rgba(255, 215, 0, 1), 
+                0 0 160px rgba(255, 215, 0, 0.6),
+                0 0 240px rgba(255, 215, 0, 0.3),
+                inset -10px -10px 20px rgba(0, 0, 0, 0.2);
+            animation: moonGlow 4s ease-in-out infinite alternate;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Dark mode styles */
+        .dark-mode {
+            background: #0f0c29;
+            color: white;
+        }
+        
+        .dark-mode .bg-white {
+            background: #1a1a2e !important;
+            color: white !important;
+        }
+        
+        .dark-mode .bg-gray-50 {
+            background: #16213e !important;
+        }
+        
+        .dark-mode .bg-gradient-to-br {
+            background: #2a2d47 !important;
+        }
+        
+        .dark-mode .text-gray-800 {
+            color: #ffffff !important;
+        }
+        
+        .dark-mode .text-gray-700 {
+            color: #e5e5e5 !important;
+        }
+        
+        .dark-mode .text-gray-600 {
+            color: #c4c4c4 !important;
+        }
+        
+        .dark-mode .text-gray-500 {
+            color: #a0a0a0 !important;
+        }
+        
+        .dark-mode .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        
+        .dark-mode .border-gray-100 {
+            border-color: #374151 !important;
+        }
+        
+        .dark-mode .border-gray-800 {
+            border-color: #4b5563 !important;
+        }
+        
+        .dark-mode .stars-bg {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 35%, #24243e 100%);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dark-mode .star {
+            background: #ffd700;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Dark mode hover effects */
+        .dark-mode .hover\\:bg-purple-50:hover {
+            background: #2D1B69 !important;
+        }
+        
+        .dark-mode .hover\\:bg-blue-50:hover {
+            background: #1e3a8a !important;
+        }
+        
+        .dark-mode .hover\\:bg-green-50:hover {
+            background: #14532d !important;
+        }
+        
+        .dark-mode .bg-purple-100 {
+            background: #553c9a !important;
+        }
+        
+        .dark-mode .bg-blue-100 {
+            background: #3b82f6 !important;
+        }
+        
+        .dark-mode .bg-green-100 {
+            background: #059669 !important;
+        }
+        
+        .dark-mode .bg-orange-100 {
+            background: #ea580c !important;
+        }
+        
+        .dark-mode .bg-red-100 {
+            background: #dc2626 !important;
+        }
+        
+        .dark-mode .bg-yellow-100 {
+            background: #ca8a04 !important;
+        }
+        
+        /* Dark mode toggle button */
+        .dark-toggle {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .dark-toggle:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .dark-mode .dark-toggle {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #0f0c29;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .dark-mode .dark-toggle:hover {
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Subtle animations */
+        .float {
+            animation: none;
+        }
+        
+        .float-delayed {
+            animation: none;
+        }
+        
+        /* Text animations */
+        .typewriter {
+            border-right: none;
+        }
+        
+        /* Simple entrance animations */
+        .fade-in {
+            opacity: 1;
+            transform: none;
+        }
+        
+        .fade-in-left {
+            opacity: 1;
+            transform: none;
+        }
+        
+        .fade-in-right {
+            opacity: 1;
+            transform: none;
+        }
+        
+        /* Simple hover effects */
+        .hover-scale {
+            transition: all 0.2s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Remove particles */
+        .particle {
+            display: none;
+        }
+        
+        /* Simple shadow */
+        .glow {
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Simple scroll indicator */
+        .scroll-indicator {
+            animation: none;
+        }
+        
+        /* Form focus effects */
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Navigation blur effect */
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Global Stars Background -->
+    <div class="stars-bg" id="global-stars"></div>
+    
+    <!-- Moon -->
+    <div class="moon" id="moon">
+        <div class="moon-detail"></div>
+        <div class="moon-detail"></div>
+    </div>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="dark-toggle" id="darkModeToggle" title="Dark Mode">
+        <i class="fas fa-moon" id="toggleIcon"></i>
+    </button>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full card-gradient flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">EZ</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold gradient-text playfair">Erkinov Ziyodullo</h1>
+                        <p class="text-sm text-gray-600">Shaxsiy Blog Web Sayti</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Bosh sahifa</a>
+                    <a href="#about" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Men haqimda</a>
+                    <a href="#books" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Kitoblar</a>
+                    <a href="#hobbies" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Hobbiylar</a>
+                    <a href="#travel" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sayohatlar</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Rasmlar</a>
+                    <a href="#contact" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Aloqa</a>
+                </div>
+                <button class="md:hidden text-gray-700 hover:text-purple-600 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <!-- Main Title -->
+            <div class="fade-in mb-6" style="animation-delay: 0.4s;">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-3 playfair">
+                    Erkinov
+                </h1>
+                <h2 class="text-4xl md:text-5xl font-bold text-white/90 playfair">
+                    Ziyodullo
+                </h2>
+            </div>
+            
+            <!-- Subtitle -->
+            <div class="fade-in mb-12" style="animation-delay: 0.6s;">
+                <p class="text-xl md:text-2xl text-white/90 font-light italic min-h-[60px] flex items-center justify-center playfair" id="typing-text"></p>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="fade-in space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center" style="animation-delay: 0.8s;">
+                <a href="#about" class="inline-block btn-primary text-white px-10 py-4 rounded-full font-semibold text-lg">
+                    Men bilan tanishing
+                </a>
+                <a href="tel:+998950571017" class="inline-block glass text-white px-10 py-4 rounded-full font-semibold text-lg hover:bg-white/20 transition-all">
+                    <i class="fas fa-phone mr-3"></i>Qo'ng'iroq qiling
+                </a>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-purple-600 font-semibold text-lg tracking-wide uppercase">Kim man?</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Men Haqimda</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden hover-scale">
+                    <div class="lg:flex">
+                        <!-- Left Side - Profile -->
+                        <div class="lg:w-2/5 card-gradient p-12 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-8">
+                                    <div class="w-32 h-32 mx-auto mb-6 glass rounded-full flex items-center justify-center float">
+                                        <i class="fas fa-user-graduate text-5xl text-white"></i>
+                                    </div>
+                                    <h3 class="text-3xl font-bold mb-2 playfair">Erkinov Ziyodullo</h3>
+                                    <p class="text-xl opacity-90">20 yoshda</p>
+                                    <div class="mt-4 flex justify-center space-x-4">
+                                        <div class="w-3 h-3 bg-white/50 rounded-full animate-pulse"></div>
+                                        <div class="w-3 h-3 bg-white/70 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                                        <div class="w-3 h-3 bg-white/50 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quick Stats -->
+                                <div class="space-y-6">
+                                    <div class="text-center p-4 glass-dark rounded-2xl">
+                                        <div class="text-3xl font-bold mb-1">2005</div>
+                                        <div class="text-sm opacity-80">Tug'ilgan yili</div>
+                                    </div>
+                                    <div class="text-center p-4 glass-dark rounded-2xl">
+                                        <div class="text-lg font-semibold mb-1">Andijon</div>
+                                        <div class="text-sm opacity-80">Viloyat</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side - Details -->
+                        <div class="lg:w-3/5 p-12">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-8 playfair">Shaxsiy Ma'lumotlar</h3>
+                            
+                            <div class="grid gap-6">
+                                <!-- Info Cards -->
+                                <div class="group hover:bg-purple-50 p-6 rounded-2xl transition-all duration-300 hover-scale">
+                                    <div class="flex items-center space-x-6">
+                                        <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                                            <i class="fas fa-calendar-alt text-purple-600 text-2xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 text-xl mb-1">Tug'ilgan sanasi</h4>
+                                            <p class="text-gray-600 text-lg">29-iyun, 2004 yil</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="group hover:bg-blue-50 p-6 rounded-2xl transition-all duration-300 hover-scale">
+                                    <div class="flex items-center space-x-6">
+                                        <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                            <i class="fas fa-map-marker-alt text-blue-600 text-2xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 text-xl mb-1">Tug'ilgan joyi</h4>
+                                            <p class="text-gray-600 text-lg">Andijon viloyati, Paxtaobod tumani</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="group hover:bg-green-50 p-6 rounded-2xl transition-all duration-300 hover-scale">
+                                    <div class="flex items-center space-x-6">
+                                        <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                                            <i class="fas fa-phone text-green-600 text-2xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 text-xl mb-1">Telefon raqami</h4>
+                                            <p class="text-gray-600 text-lg">+998 95 057 10 17</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section id="books" class="py-24 bg-gradient-to-br from-purple-50 to-blue-50 relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-purple-600 font-semibold text-lg tracking-wide uppercase">📚 Bilim olish</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Kitoblar</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- O'qib tugatgan kitoblar -->
+                    <div class="fade-in-left">
+                        <div class="bg-white rounded-3xl shadow-2xl p-8 hover-scale h-full">
+                            <div class="flex items-center mb-8">
+                                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-bold text-gray-800 playfair">O'qib tugatgan kitoblar</h3>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="group p-6 border-2 border-gray-100 rounded-2xl hover:border-green-300 transition-all hover:bg-green-50">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-16 bg-gradient-to-b from-green-400 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-book text-white text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 text-xl mb-2">Dale Carnegie</h4>
+                                            <p class="text-gray-600">Barcha kitoblari - Do'stlar orttirish va odamlarga ta'sir qilish san'ati</p>
+                                            <div class="mt-3 flex items-center">
+                                                <div class="flex text-yellow-400">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <span class="ml-2 text-green-600 font-semibold">✓ Tugatildi</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="group p-6 border-2 border-gray-100 rounded-2xl hover:border-green-300 transition-all hover:bg-green-50">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-16 bg-gradient-to-b from-blue-400 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-book text-white text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 text-xl mb-2">Steve Jobs</h4>
+                                            <p class="text-gray-600">Apple kompaniyasi asoschisining biografiyasi</p>
+                                            <div class="mt-3 flex items-center">
+                                                <div class="flex text-yellow-400">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <span class="ml-2 text-green-600 font-semibold">✓ Tugatildi</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center p-6 bg-gradient-to-r from-green-100 to-blue-100 rounded-2xl">
+                                    <i class="fas fa-books text-4xl text-green-600 mb-4"></i>
+                                    <p class="text-gray-700 font-semibold">Va yana ko'plab kitoblar...</p>
+                                    <p class="text-gray-600 text-sm mt-2">Doimiy ravishda bilimni oshirib boraman</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hozir o'qiyotgan kitob -->
+                    <div class="fade-in-right">
+                        <div class="bg-white rounded-3xl shadow-2xl p-8 hover-scale h-full">
+                            <div class="flex items-center mb-8">
+                                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-book-open text-orange-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-bold text-gray-800 playfair">Hozir o'qiyotgan</h3>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="group p-8 border-2 border-orange-200 rounded-2xl hover:border-orange-400 transition-all bg-gradient-to-br from-orange-50 to-red-50">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-16 h-20 bg-gradient-to-b from-orange-400 to-red-500 rounded-lg flex items-center justify-center flex-shrink-0 relative">
+                                            <i class="fas fa-book-open text-white text-xl"></i>
+                                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-eye text-white text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-bold text-gray-800 text-2xl mb-2">Anor</h4>
+                                            <p class="text-gray-700 font-semibold text-lg mb-1">Abdulla Qahhor</p>
+                                            <p class="text-gray-600 mb-4">O'zbek adabiyotining eng zo'r asarlaridan biri</p>
+                                            
+                                            <!-- Progress bar -->
+                                            <div class="mb-4">
+                                                <div class="flex justify-between items-center mb-2">
+                                                    <span class="text-sm text-gray-600">O'qish jarayoni</span>
+                                                    <span class="text-sm font-semibold text-orange-600">75%</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                                    <div class="bg-gradient-to-r from-orange-400 to-red-500 h-3 rounded-full" style="width: 75%"></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-center text-orange-600">
+                                                <i class="fas fa-fire mr-2"></i>
+                                                <span class="font-semibold">Hozirda o'qilmoqda...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center p-6 bg-gradient-to-r from-orange-100 to-purple-100 rounded-2xl">
+                                    <i class="fas fa-target text-4xl text-purple-600 mb-4"></i>
+                                    <h4 class="font-bold text-gray-800 text-lg mb-2">Kitob o'qish maqsadim</h4>
+                                    <p class="text-gray-600">Har oy kamida 2 ta kitob o'qishni maqsad qilganman</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hobbies Section -->
+    <section id="hobbies" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-green-600 font-semibold text-lg tracking-wide uppercase">🎯 Dam olish</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Hobbiylar</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-green-500 to-blue-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Futbol -->
+                    <div class="fade-in" style="animation-delay: 0.2s;">
+                        <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                            <div class="relative z-10">
+                                <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-futbol text-4xl text-white"></i>
+                                </div>
+                                <h3 class="text-3xl font-bold text-center mb-6 playfair">Futbol</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-heart text-red-300 mr-3"></i>
+                                        <span>Eng sevimli sportim</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-blue-300 mr-3"></i>
+                                        <span>Do'stlar bilan o'ynash</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-trophy text-yellow-300 mr-3"></i>
+                                        <span>Mahalliy turnirlar</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-tv text-purple-300 mr-3"></i>
+                                        <span>Real Madrid fanatiman</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Shaxmat -->
+                    <div class="fade-in" style="animation-delay: 0.4s;">
+                        <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-16 -translate-x-16"></div>
+                            <div class="relative z-10">
+                                <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-chess text-4xl text-white"></i>
+                                </div>
+                                <h3 class="text-3xl font-bold text-center mb-6 playfair">Shaxmat</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-brain text-pink-300 mr-3"></i>
+                                        <span>Aqliy rivojlanish</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-chess-king text-yellow-300 mr-3"></i>
+                                        <span>Strategik fikrlash</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-blue-300 mr-3"></i>
+                                        <span>Tez shaxmat</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-laptop text-green-300 mr-3"></i>
+                                        <span>Online o'yinlar</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Counter Strike 1.6 -->
+                    <div class="fade-in" style="animation-delay: 0.6s;">
+                        <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-8 text-white hover-scale h-full relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 -translate-x-16"></div>
+                            <div class="relative z-10">
+                                <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-gamepad text-4xl text-white"></i>
+                                </div>
+                                <h3 class="text-3xl font-bold text-center mb-6 playfair">Counter Strike 1.6</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-fire text-yellow-300 mr-3"></i>
+                                        <span>Klassik o'yin</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-crosshairs text-red-300 mr-3"></i>
+                                        <span>Aniq nishonga olish</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users-cog text-blue-300 mr-3"></i>
+                                        <span>Jamoa o'yini</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-medal text-purple-300 mr-3"></i>
+                                        <span>Turnir ishtirokchisi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Qo'shimcha ma'lumot -->
+                <div class="mt-16 text-center">
+                    <div class="fade-in bg-gradient-to-r from-purple-100 to-blue-100 rounded-3xl p-8 max-w-4xl mx-auto">
+                        <i class="fas fa-heart text-5xl text-red-500 mb-6"></i>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 playfair">Sport va o'yinlarga muhabbatim</h3>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            Men har doim faol turmush keciraman. Futbol - bu mening hayotimdagi eng katta ishtiyoqim, 
+                            shaxmat esa aqlimni rivojlantiradi, Counter Strike 1.6 esa do'stlar bilan qiziqarli vaqt o'tkazishga yordam beradi. 
+                            Bu hobbiylar menga muvozanatli hayot kechirish imkonini beradi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Section -->
+    <section id="travel" class="py-24 bg-gradient-to-br from-blue-50 to-indigo-100 relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-blue-600 font-semibold text-lg tracking-wide uppercase">✈️ Kashfiyotlar</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Borgan Shaharlarim</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- O'zbekiston -->
+                    <div class="fade-in-left">
+                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden hover-scale">
+                            <div class="h-48 bg-gradient-to-br from-green-400 to-blue-500 relative">
+                                <img src="keys/uzbekistan-flag?prompt=Beautiful%20Uzbekistan%20flag%20with%20blue%20white%20green%20stripes%20and%20crescent%20moon%20with%20stars" 
+                                     alt="O'zbekiston" class="w-full h-full object-cover opacity-80">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                <div class="absolute bottom-4 left-6">
+                                    <h3 class="text-3xl font-bold text-white playfair">O'zbekiston 🇺🇿</h3>
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <p class="text-gray-600 text-lg mb-6">Mening ona yurtim - go'zal O'zbekiston. Bu yerda tug'ilib o'sgandman va ko'plab shaharlarini ko'rganman.</p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center p-4 bg-blue-50 rounded-xl">
+                                        <i class="fas fa-home text-blue-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Andijon</h4>
+                                            <p class="text-gray-600">Mening ona shahrim</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-green-50 rounded-xl">
+                                        <i class="fas fa-mosque text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Toshkent</h4>
+                                            <p class="text-gray-600">Poytaxt shahri</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-purple-50 rounded-xl">
+                                        <i class="fas fa-mountain text-purple-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Samarqand</h4>
+                                            <p class="text-gray-600">Tarixiy shahar</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-orange-50 rounded-xl">
+                                        <i class="fas fa-star text-orange-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Buxoro</h4>
+                                            <p class="text-gray-600">Muqaddas shahar</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Qirg'iziston -->
+                    <div class="fade-in-right">
+                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden hover-scale">
+                            <div class="h-48 bg-gradient-to-br from-red-400 to-yellow-500 relative">
+                                <img src="keys/kyrgyzstan-flag?prompt=Beautiful%20Kyrgyzstan%20flag%20with%20red%20background%20and%20yellow%20sun%20symbol%20mountains" 
+                                     alt="Qirg'iziston" class="w-full h-full object-cover opacity-80">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                <div class="absolute bottom-4 left-6">
+                                    <h3 class="text-3xl font-bold text-white playfair">Qirg'iziston 🇰🇬</h3>
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <p class="text-gray-600 text-lg mb-6">Go'zal tog'lar mamlakatiga sayohat qilganman. Tabiat va odamlarning mehribonligi juda yoqdi.</p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center p-4 bg-red-50 rounded-xl">
+                                        <i class="fas fa-city text-red-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Bishkek</h4>
+                                            <p class="text-gray-600">Poytaxt shahri</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-blue-50 rounded-xl">
+                                        <i class="fas fa-water text-blue-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Issiq-Kul ko'li</h4>
+                                            <p class="text-gray-600">Dunyodagi ikkinchi eng katta tog' ko'li</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-green-50 rounded-xl">
+                                        <i class="fas fa-mountain text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Tog'lar</h4>
+                                            <p class="text-gray-600">Ajoyib manzaralar</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-yellow-50 rounded-xl">
+                                        <i class="fas fa-heart text-yellow-600 text-xl mr-4"></i>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">Tajriba</h4>
+                                            <p class="text-gray-600">Ajoyib xotiralar</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sayohat statistikasi -->
+                <div class="mt-16">
+                    <div class="fade-in bg-white rounded-3xl shadow-2xl p-8">
+                        <h3 class="text-3xl font-bold text-center text-gray-800 mb-8 playfair">Sayohat Statistikam</h3>
+                        <div class="grid md:grid-cols-4 gap-6">
+                            <div class="text-center p-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl">
+                                <i class="fas fa-globe text-4xl text-blue-600 mb-4"></i>
+                                <div class="text-3xl font-bold text-gray-800 mb-2">2</div>
+                                <p class="text-gray-600">Mamlakat</p>
+                            </div>
+                            <div class="text-center p-6 bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
+                                <i class="fas fa-city text-4xl text-green-600 mb-4"></i>
+                                <div class="text-3xl font-bold text-gray-800 mb-2">8+</div>
+                                <p class="text-gray-600">Shahar</p>
+                            </div>
+                            <div class="text-center p-6 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl">
+                                <i class="fas fa-camera text-4xl text-purple-600 mb-4"></i>
+                                <div class="text-3xl font-bold text-gray-800 mb-2">100+</div>
+                                <p class="text-gray-600">Rasm</p>
+                            </div>
+                            <div class="text-center p-6 bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl">
+                                <i class="fas fa-heart text-4xl text-red-600 mb-4"></i>
+                                <div class="text-3xl font-bold text-gray-800 mb-2">∞</div>
+                                <p class="text-gray-600">Xotira</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-purple-600 font-semibold text-lg tracking-wide uppercase">📸 Xotiralar</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Rasm Galereyasi</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto">
+                <!-- Gallery Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <!-- Sayohat rasmlari -->
+                    <div class="fade-in hover-scale" style="animation-delay: 0.1s;">
+                        <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/uzbekistan-landscape?prompt=Beautiful%20Uzbekistan%20landscape%20with%20traditional%20architecture%20and%20blue%20sky" 
+                                 alt="O'zbekiston manzarasi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">O'zbekiston manzarasi</h4>
+                                <p class="text-sm opacity-90">Samarqand, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in hover-scale" style="animation-delay: 0.2s;">
+                        <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/kyrgyzstan-mountains?prompt=Beautiful%20Kyrgyzstan%20mountains%20with%20snow%20peaks%20and%20clear%20blue%20sky" 
+                                 alt="Qirg'iziston tog'lari" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">Qirg'iziston tog'lari</h4>
+                                <p class="text-sm opacity-90">Issiq-Kul, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in hover-scale" style="animation-delay: 0.3s;">
+                        <div class="bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/football-game?prompt=Young%20people%20playing%20football%20on%20a%20grass%20field%20sunny%20day" 
+                                 alt="Futbol o'yini" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">Futbol o'yini</h4>
+                                <p class="text-sm opacity-90">Do'stlar bilan, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in hover-scale" style="animation-delay: 0.4s;">
+                        <div class="bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/books-reading?prompt=Books%20and%20reading%20setup%20with%20warm%20lighting%20cozy%20atmosphere" 
+                                 alt="Kitob o'qish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">Kitob o'qish</h4>
+                                <p class="text-sm opacity-90">Uyda, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in hover-scale" style="animation-delay: 0.5s;">
+                        <div class="bg-gradient-to-br from-gray-600 to-gray-800 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/chess-game?prompt=Chess%20board%20game%20with%20pieces%20in%20action%20strategic%20thinking" 
+                                 alt="Shaxmat o'yini" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">Shaxmat o'yini</h4>
+                                <p class="text-sm opacity-90">Turnir, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="fade-in hover-scale" style="animation-delay: 0.6s;">
+                        <div class="bg-gradient-to-br from-indigo-400 to-blue-600 rounded-2xl overflow-hidden h-64 relative group">
+                            <img src="keys/andijan-city?prompt=Beautiful%20Andijan%20city%20view%20with%20modern%20and%20traditional%20buildings" 
+                                 alt="Andijon shahri" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/40 transition-all"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-lg">Andijon shahri</h4>
+                                <p class="text-sm opacity-90">Ona shahrim, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gallery Stats -->
+                <div class="fade-in bg-gradient-to-r from-purple-100 to-blue-100 rounded-3xl p-8">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-images text-5xl text-purple-600 mb-4"></i>
+                        <h3 class="text-3xl font-bold text-gray-800 playfair">Fotosuratlar orqali hayotim</h3>
+                        <p class="text-gray-600 text-lg mt-4">
+                            Har bir rasm - bu mening hayotimdagi muhim lahzalar. Sayohatlar, sport, 
+                            do'stlar va oila bilan o'tkazgan vaqtlar - bularning barchasi mening xotiramda.
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 bg-white rounded-2xl">
+                            <i class="fas fa-camera text-3xl text-blue-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800 mb-1">500+</div>
+                            <p class="text-gray-600">Rasm</p>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-2xl">
+                            <i class="fas fa-map-pin text-3xl text-green-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800 mb-1">15+</div>
+                            <p class="text-gray-600">Joylashuv</p>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-2xl">
+                            <i class="fas fa-calendar text-3xl text-purple-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800 mb-1">2024</div>
+                            <p class="text-gray-600">Yil</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 contact-gradient relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl float"></div>
+            <div class="absolute bottom-0 right-0 w-72 h-72 bg-purple-300/10 rounded-full blur-3xl float-delayed"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <div class="fade-in mb-4">
+                    <span class="text-cyan-300 font-semibold text-lg tracking-wide uppercase">Bog'laning</span>
+                </div>
+                <div class="fade-in">
+                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-6 playfair">Men Bilan Aloqa</h2>
+                    <p class="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+                        Har qanday savol, taklif yoki loyihalar haqida gaplashishni istasangiz, men bilan bog'laning!
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Contact Info -->
+                    <div class="space-y-8">
+                        <div class="fade-in-left">
+                            <h3 class="text-3xl font-bold text-white mb-8 playfair">Aloqa ma'lumotlari</h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="glass p-6 rounded-2xl hover-scale group">
+                                <div class="flex items-center space-x-6">
+                                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                                        <i class="fas fa-phone text-white text-2xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white text-xl mb-1">Telefon</h4>
+                                        <p class="text-white/80 text-lg">+998 95 057 10 17</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="glass p-6 rounded-2xl hover-scale group">
+                                <div class="flex items-center space-x-6">
+                                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                                        <i class="fas fa-envelope text-white text-2xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white text-xl mb-1">Email</h4>
+                                        <p class="text-white/80 text-lg">erkinovziyodullo@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass p-6 rounded-2xl hover-scale group">
+                                <div class="flex items-center space-x-6">
+                                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                                        <i class="fas fa-map-marker-alt text-white text-2xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white text-xl mb-1">Manzil</h4>
+                                        <p class="text-white/80 text-lg">Andijon viloyati, Paxtaobod tumani</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Contact -->
+                        <div class="fade-in-left pt-8">
+                            <a href="tel:+998950571017" class="inline-block btn-primary text-white px-8 py-4 rounded-2xl font-semibold text-lg w-full text-center">
+                                <i class="fas fa-phone mr-3"></i>Qo'ng'iroq qiling
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="fade-in-right">
+                        <div class="glass p-8 rounded-2xl">
+                            <h3 class="text-3xl font-bold text-white mb-8 playfair">Men bilan bog'laning</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="text-center p-8 glass-dark rounded-2xl">
+                                    <div class="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-phone text-white text-3xl"></i>
+                                    </div>
+                                    <h4 class="text-2xl font-bold text-white mb-4">Telefon orqali</h4>
+                                    <p class="text-white/80 text-lg mb-6">To'g'ridan-to'g'ri qo'ng'iroq qiling</p>
+                                    <a href="tel:+998950571017" class="btn-primary w-full text-white py-4 rounded-xl font-semibold text-lg inline-block">
+                                        <i class="fas fa-phone mr-3"></i>+998 95 057 10 17
+                                    </a>
+                                </div>
+                                
+                                <div class="text-center p-8 glass-dark rounded-2xl">
+                                    <div class="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-envelope text-white text-3xl"></i>
+                                    </div>
+                                    <h4 class="text-2xl font-bold text-white mb-4">Email orqali</h4>
+                                    <p class="text-white/80 text-lg mb-6">Email yuboring</p>
+                                    <a href="mailto:erkinovziyodullo@gmail.com" class="btn-primary w-full text-white py-4 rounded-xl font-semibold text-lg inline-block">
+                                        <i class="fas fa-envelope mr-3"></i>Email yozing
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div class="w-12 h-12 rounded-full card-gradient flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">EZ</span>
+                    </div>
+                    <h3 class="text-2xl font-bold playfair">Erkinov Ziyodullo</h3>
+                </div>
+                
+                <p class="text-gray-400 text-lg mb-8">Men bilan bog'laning va keling birga ishlaylik!</p>
+                
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="tel:+998950571017" class="w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-all duration-300 hover-scale">
+                        <i class="fas fa-phone text-xl"></i>
+                    </a>
+                    <a href="mailto:erkinovziyodullo@gmail.com" class="w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover-scale">
+                        <i class="fas fa-envelope text-xl"></i>
+                    </a>
+                    <a href="#" class="w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all duration-300 hover-scale">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+                
+                <div class="border-t border-gray-800 pt-8">
+                    <p class="text-gray-500">&copy; 2025 Erkinov Ziyodullo. Barcha huquqlar himoyalangan.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Simple static text
+        const typingElement = document.getElementById('typing-text');
+        if (typingElement) {
+            typingElement.textContent = "Shaxsiy web sayt blogi";
+        }
+        
+        // Global yulduzlar yaratish
+        function createGlobalStars() {
+            const starsContainer = document.getElementById('global-stars');
+            if (!starsContainer) return;
+            
+            // Oddiy yulduzlar
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 4 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            // Uchuvchi yulduzlar
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.top = Math.random() * 80 + '%';
+                shootingStar.style.left = '0%';
+                shootingStar.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                starsContainer.appendChild(shootingStar);
+                
+                // 6 soniyadan keyin olib tashlash
+                setTimeout(() => {
+                    if (shootingStar.parentNode) {
+                        shootingStar.remove();
+                    }
+                }, 6000);
+            }, 4000);
+        }
+        
+        // Dark mode toggle
+        function toggleDarkMode() {
+            const body = document.body;
+            const toggleIcon = document.getElementById('toggleIcon');
+            const moon = document.getElementById('moon');
+            const starsContainer = document.getElementById('global-stars');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                toggleIcon.className = 'fas fa-sun';
+                // Dark mode: Oy charaqlasin, yulduzlar ko'rinsin
+                moon.style.opacity = '1';
+                moon.style.visibility = 'visible';
+                starsContainer.style.opacity = '1';
+                starsContainer.style.visibility = 'visible';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                toggleIcon.className = 'fas fa-moon';
+                // Light mode: Oy charaqlamasdan ko'rinsin, yulduzlar yashirilsin
+                moon.style.opacity = '1';
+                moon.style.visibility = 'visible';
+                starsContainer.style.opacity = '0';
+                starsContainer.style.visibility = 'hidden';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+        
+        // Dark mode ni yuklash
+        function loadDarkMode() {
+            const darkMode = localStorage.getItem('darkMode');
+            const body = document.body;
+            const toggleIcon = document.getElementById('toggleIcon');
+            const moon = document.getElementById('moon');
+            const starsContainer = document.getElementById('global-stars');
+            
+            if (darkMode === 'enabled') {
+                body.classList.add('dark-mode');
+                toggleIcon.className = 'fas fa-sun';
+                // Dark mode: Oy charaqlasin, yulduzlar ko'rinsin
+                moon.style.opacity = '1';
+                moon.style.visibility = 'visible';
+                starsContainer.style.opacity = '1';
+                starsContainer.style.visibility = 'visible';
+            } else {
+                // Light mode: Oy oddiy ko'rinsin, yulduzlar yashirilsin
+                moon.style.opacity = '1';
+                moon.style.visibility = 'visible';
+                starsContainer.style.opacity = '0';
+                starsContainer.style.visibility = 'hidden';
+            }
+        }
+        
+        // Sahifa yuklanganda
+        document.addEventListener('DOMContentLoaded', () => {
+            // Yulduzlarni yaratamiz
+            createGlobalStars();
+            loadDarkMode();
+            
+            // Dark mode tugmasini ulash
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-blur');
+            } else {
+                navbar.classList.remove('nav-blur');
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Animations removed for simplicity
+        
+
+        
+        // Add form validation feedback
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', function() {
+                this.style.borderColor = '#ef4444';
+            });
+            
+            input.addEventListener('input', function() {
+                this.style.borderColor = '';
+            });
+        });
+    </script>
+</body>
+</html>
