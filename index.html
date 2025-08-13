@@ -571,6 +571,10 @@
                     <a href="#hobbies" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Hobbiylar</a>
                     <a href="#travel" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sayohatlar</a>
                     <a href="#gallery" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Rasmlar</a>
+                    <a href="#guestbook" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Mehmon kitobi</a>
+                    <a href="#widgets" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Widgets</a>
+                    <a href="#admin" class="text-gray-700 hover:text-red-600 transition-all duration-300 font-medium">Admin</a>
+                    <a href="#booking" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Bron qilish</a>
                     <a href="#comments" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sharhlar</a>
                     <a href="#contact" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Aloqa</a>
                 </div>
@@ -1381,6 +1385,412 @@
         </div>
     </section>
 
+    <!-- Live Chat Widget -->
+    <div id="liveChatWidget" class="fixed bottom-6 right-6 z-50">
+        <div id="chatToggle" class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-2xl hover:scale-110 transition-all duration-300">
+            <i class="fas fa-comments text-2xl" id="chatToggleIcon"></i>
+        </div>
+        
+        <div id="chatWindow" class="absolute bottom-20 right-0 w-80 h-96 bg-white rounded-2xl shadow-2xl hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-t-2xl text-white">
+                <div class="flex justify-between items-center">
+                    <h4 class="font-bold">Live Chat</h4>
+                    <button id="chatClose" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex items-center mt-2">
+                    <div class="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                    <span class="text-sm">Online</span>
+                </div>
+            </div>
+            <div id="chatMessages" class="h-64 p-4 overflow-y-auto bg-gray-50"></div>
+            <div class="p-4 border-t">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Xabar yozing..." class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    <button id="chatSend" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Book Section -->
+    <section id="guestbook" class="py-24 bg-gradient-to-br from-green-50 to-teal-100 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-green-600 font-semibold text-lg tracking-wide uppercase">📖 Xotiralar</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Mehmon Kitobi</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-green-500 to-teal-500 mx-auto rounded-full"></div>
+                    <p class="text-xl text-gray-600 mt-6">Tashrif buyurganingiz uchun xotirani qoldiring!</p>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-2xl p-8 mb-12">
+                    <form id="guestbookForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Ismingiz *</label>
+                                <input type="text" id="guestName" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Shahar</label>
+                                <input type="text" id="guestCity" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Xabaringiz *</label>
+                            <textarea id="guestMessage" required rows="4" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-feather-alt mr-3"></i>Xotira qoldirish
+                        </button>
+                    </form>
+                </div>
+                
+                <div id="guestbookEntries" class="space-y-6"></div>
+                
+                <div id="emptyGuestbook" class="text-center py-12 bg-white rounded-3xl shadow-lg">
+                    <i class="fas fa-book-open text-6xl text-gray-300 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Birinchi xotira qoldiring!</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Widgets Section -->
+    <section id="widgets" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-blue-600 font-semibold text-lg tracking-wide uppercase">🛠️ Foydali Vositalar</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Widgets</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Weather Widget -->
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold">Ob-havo</h3>
+                        <i class="fas fa-cloud-sun text-3xl"></i>
+                    </div>
+                    <div id="weatherInfo">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2" id="weatherTemp">--°C</div>
+                            <div class="text-lg mb-4" id="weatherDesc">Yuklanmoqda...</div>
+                            <div class="text-sm" id="weatherLocation">Andijon, O'zbekiston</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Clock Widget -->
+                <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 text-white">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold">Soat</h3>
+                        <i class="fas fa-clock text-3xl"></i>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-2 font-mono" id="currentTime">--:--:--</div>
+                        <div class="text-lg mb-4" id="currentDate">--- --- --</div>
+                        <div class="space-x-2">
+                            <button id="startTimer" class="bg-white/20 px-4 py-2 rounded-lg">Start</button>
+                            <button id="stopTimer" class="bg-white/20 px-4 py-2 rounded-lg">Stop</button>
+                            <button id="resetTimer" class="bg-white/20 px-4 py-2 rounded-lg">Reset</button>
+                        </div>
+                        <div class="mt-4">
+                            <div class="text-sm">Timer: <span id="timerDisplay">00:00:00</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Calculator Widget -->
+                <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl p-8 text-white">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold">Kalkulyator</h3>
+                        <i class="fas fa-calculator text-3xl"></i>
+                    </div>
+                    <div class="space-y-4">
+                        <input type="text" id="calcDisplay" readonly class="w-full bg-black/30 text-right p-4 rounded-lg text-2xl font-mono">
+                        <div class="grid grid-cols-4 gap-2">
+                            <button class="calc-btn bg-red-500 hover:bg-red-600 p-3 rounded-lg font-bold" onclick="clearCalc()">C</button>
+                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('/')">/</button>
+                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('*')">×</button>
+                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="deleteLast()">⌫</button>
+                            
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('7')">7</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('8')">8</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('9')">9</button>
+                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('-')">-</button>
+                            
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('4')">4</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('5')">5</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('6')">6</button>
+                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('+')">+</button>
+                            
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('1')">1</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('2')">2</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('3')">3</button>
+                            <button class="calc-btn bg-green-500 hover:bg-green-600 p-3 rounded-lg font-bold row-span-2" onclick="calculateResult()">=</button>
+                            
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold col-span-2" onclick="appendCalc('0')">0</button>
+                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('.')">.</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="admin" class="py-24 bg-gradient-to-br from-red-50 to-orange-100 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-red-600 font-semibold text-lg tracking-wide uppercase">🔐 Admin</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Admin Panel</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Admin Login -->
+                <div id="adminLogin" class="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Admin kirish</h3>
+                    <form id="adminLoginForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Parol</label>
+                            <input type="password" id="adminPassword" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 outline-none" placeholder="Admin parolini kiriting">
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-orange-600 text-white py-4 rounded-xl font-semibold text-lg">
+                            <i class="fas fa-sign-in-alt mr-3"></i>Kirish
+                        </button>
+                    </form>
+                    <p class="text-center text-gray-500 mt-4 text-sm">Admin parol: <code class="bg-gray-100 px-2 py-1 rounded">ziyodullo2024</code></p>
+                </div>
+                
+                <!-- Admin Dashboard -->
+                <div id="adminDashboard" class="hidden space-y-8">
+                    <!-- Stats Cards -->
+                    <div class="grid md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                            <i class="fas fa-calendar-check text-3xl text-blue-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800" id="adminBookingsCount">0</div>
+                            <p class="text-gray-600">Bron qilinganlar</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                            <i class="fas fa-comments text-3xl text-green-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800" id="adminCommentsCount">0</div>
+                            <p class="text-gray-600">Sharhlar</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                            <i class="fas fa-book-open text-3xl text-purple-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800" id="adminGuestbookCount">0</div>
+                            <p class="text-gray-600">Mehmon kitob</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                            <i class="fas fa-message text-3xl text-orange-600 mb-3"></i>
+                            <div class="text-2xl font-bold text-gray-800" id="adminChatCount">0</div>
+                            <p class="text-gray-600">Chat xabarlari</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Tabs -->
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                        <div class="border-b border-gray-200">
+                            <nav class="flex space-x-8 px-8 py-4">
+                                <button class="admin-tab-btn active font-semibold py-2 px-4 border-b-2 border-blue-500 text-blue-600" data-tab="bookings">
+                                    Bron qilinganlar
+                                </button>
+                                <button class="admin-tab-btn font-semibold py-2 px-4 text-gray-500 hover:text-gray-700" data-tab="comments">
+                                    Sharhlar
+                                </button>
+                                <button class="admin-tab-btn font-semibold py-2 px-4 text-gray-500 hover:text-gray-700" data-tab="guestbook">
+                                    Mehmon kitob
+                                </button>
+                                <button class="admin-tab-btn font-semibold py-2 px-4 text-gray-500 hover:text-gray-700" data-tab="chats">
+                                    Chat xabarlari
+                                </button>
+                            </nav>
+                        </div>
+                        
+                        <!-- Tab Contents -->
+                        <div class="p-8">
+                            <!-- Bookings Tab -->
+                            <div id="adminBookingsTab" class="admin-tab-content">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold text-gray-800">Bron qilingan uchrashuvlar</h3>
+                                    <button id="exportBookings" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                                <div id="adminBookingsList" class="space-y-4"></div>
+                            </div>
+                            
+                            <!-- Comments Tab -->
+                            <div id="adminCommentsTab" class="admin-tab-content hidden">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold text-gray-800">Barcha sharhlar</h3>
+                                    <button id="exportComments" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                                <div id="adminCommentsList" class="space-y-4"></div>
+                            </div>
+                            
+                            <!-- Guestbook Tab -->
+                            <div id="adminGuestbookTab" class="admin-tab-content hidden">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold text-gray-800">Mehmon kitob yozuvlari</h3>
+                                    <button id="exportGuestbook" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                                <div id="adminGuestbookList" class="space-y-4"></div>
+                            </div>
+                            
+                            <!-- Chats Tab -->
+                            <div id="adminChatsTab" class="admin-tab-content hidden">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold text-gray-800">Chat xabarlari</h3>
+                                    <button id="exportChats" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                                <div id="adminChatsList" class="space-y-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Actions -->
+                    <div class="bg-white rounded-3xl shadow-2xl p-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Admin amallar</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <button id="clearAllBookings" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-trash mr-2"></i>Bron qilinganlarni tozalash
+                            </button>
+                            <button id="clearAllComments" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-trash mr-2"></i>Sharhlarni tozalash
+                            </button>
+                            <button id="clearAllData" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                                <i class="fas fa-trash-alt mr-2"></i>Barchasini tozalash
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-24 bg-gradient-to-br from-indigo-50 to-blue-100 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="fade-in-left mb-4">
+                    <span class="text-indigo-600 font-semibold text-lg tracking-wide uppercase">📅 Uchrashuv</span>
+                </div>
+                <div class="fade-in-right">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Vaqt Bron Qilish</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 mx-auto rounded-full"></div>
+                    <p class="text-xl text-gray-600 mt-6">Men bilan uchrashuv vaqtini belgilang</p>
+                </div>
+            </div>
+            
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
+                <!-- Kalendar -->
+                <div class="bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Kalendar</h3>
+                    <div id="calendar" class="space-y-4">
+                        <!-- Kalendar bu yerda bo'ladi -->
+                        <div class="text-center p-8 bg-gray-50 rounded-2xl">
+                            <i class="fas fa-calendar-alt text-4xl text-gray-400 mb-4"></i>
+                            <div class="text-lg font-semibold text-gray-700" id="currentMonth">2025 yil Yanvar</div>
+                            <div class="grid grid-cols-7 gap-2 mt-6 text-sm">
+                                <div class="p-2 font-semibold text-gray-600">Du</div>
+                                <div class="p-2 font-semibold text-gray-600">Se</div>
+                                <div class="p-2 font-semibold text-gray-600">Cho</div>
+                                <div class="p-2 font-semibold text-gray-600">Pa</div>
+                                <div class="p-2 font-semibold text-gray-600">Ju</div>
+                                <div class="p-2 font-semibold text-gray-600">Sha</div>
+                                <div class="p-2 font-semibold text-gray-600">Ya</div>
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 mt-2" id="calendarDays">
+                                <!-- Kunlar bu yerda dinamik qo'shiladi -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking Form -->
+                <div class="bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Uchrashuv Bron Qilish</h3>
+                    <form id="bookingForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ismingiz *</label>
+                            <input type="text" id="bookingName" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Telefon *</label>
+                            <input type="tel" id="bookingPhone" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Sana *</label>
+                                <input type="date" id="bookingDate" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Vaqt *</label>
+                                <select id="bookingTime" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
+                                    <option value="">Vaqtni tanlang</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Mavzu *</label>
+                            <textarea id="bookingTopic" required rows="4" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none resize-none" placeholder="Nima haqida gaplashmoqchisiz?"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-calendar-check mr-3"></i>Bron Qilish
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Booking List -->
+            <div class="max-w-4xl mx-auto mt-12">
+                <div class="bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Bron Qilingan Uchrashuvlar</h3>
+                    <div id="bookingList" class="space-y-4"></div>
+                    <div id="emptyBookings" class="text-center py-8">
+                        <i class="fas fa-calendar-times text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-600">Hali bron qilingan uchrashuv yo'q</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Comments Section -->
     <section id="comments" class="py-24 bg-gradient-to-br from-indigo-50 to-purple-100 relative">
         <div class="container mx-auto px-6">
@@ -1613,7 +2023,8 @@
                 
                 <div class="border-t border-gray-800 pt-8">
                     <p class="text-gray-500">&copy; 2025 Erkinov Ziyodullo. Barcha huquqlar himoyalangan.</p>
-                    <p class="text-gray-600 text-sm mt-2">Sharhlar va like'lar mahalliy xotirada saqlanadi</p>
+                    <p class="text-gray-600 text-sm mt-2">🔒 Ma'lumotlar xavfsiz saqlanadi va o'chib ketmaydi</p>
+                    <p class="text-gray-500 text-xs mt-1">💾 localStorage texnologiyasi: har bir foydalanuvchi o'z ma'lumotlarini o'z kompyuterida saqlaydi</p>
                 </div>
             </div>
         </div>
@@ -1960,12 +2371,677 @@
             }
         }
         
+        // Live Chat functionality
+        let chatMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        
+        function initLiveChat() {
+            const chatToggle = document.getElementById('chatToggle');
+            const chatWindow = document.getElementById('chatWindow');
+            const chatClose = document.getElementById('chatClose');
+            const chatSend = document.getElementById('chatSend');
+            const chatInput = document.getElementById('chatInput');
+            
+            chatToggle.addEventListener('click', () => {
+                chatWindow.classList.toggle('hidden');
+                if (!chatWindow.classList.contains('hidden')) {
+                    displayChatMessages();
+                    chatInput.focus();
+                }
+            });
+            
+            chatClose.addEventListener('click', () => {
+                chatWindow.classList.add('hidden');
+            });
+            
+            chatSend.addEventListener('click', sendChatMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+            
+            // Add welcome message if first time
+            if (chatMessages.length === 0) {
+                chatMessages.push({
+                    sender: 'admin',
+                    message: 'Salom! Men Ziyodullo. Sizga qanday yordam bera olaman?',
+                    time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+                });
+                saveChatMessages();
+            }
+        }
+        
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                chatMessages.push({
+                    sender: 'user',
+                    message: message,
+                    time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+                });
+                
+                // Auto reply after 2 seconds
+                setTimeout(() => {
+                    const replies = [
+                        'Rahmat xabaringiz uchun! Tez orada javob beraman.',
+                        'Qiziqarli savol! Men bilan telefon orqali ham bog\'lanishingiz mumkin.',
+                        'Bu haqida batafsil gaplashsak yaxshi bo\'lardi. Qo\'ng\'iroq qiling!',
+                        'Ajoyib! Men sizning fikringizni qadrlayman.',
+                        'Bu mavzuda ko\'proq ma\'lumot kerak bo\'lsa, men bilan bog\'laning.'
+                    ];
+                    
+                    chatMessages.push({
+                        sender: 'admin',
+                        message: replies[Math.floor(Math.random() * replies.length)],
+                        time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+                    });
+                    
+                    saveChatMessages();
+                    displayChatMessages();
+                }, 2000);
+                
+                chatInput.value = '';
+                saveChatMessages();
+                displayChatMessages();
+            }
+        }
+        
+        function displayChatMessages() {
+            const chatMessagesDiv = document.getElementById('chatMessages');
+            chatMessagesDiv.innerHTML = chatMessages.map(msg => `
+                <div class="mb-3 ${msg.sender === 'user' ? 'text-right' : 'text-left'}">
+                    <div class="inline-block p-3 rounded-lg max-w-xs ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-white text-gray-800'}">
+                        <div class="text-sm">${msg.message}</div>
+                        <div class="text-xs opacity-70 mt-1">${msg.time}</div>
+                    </div>
+                </div>
+            `).join('');
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+        }
+        
+        function saveChatMessages() {
+            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+        }
+        
+        // Guest Book functionality
+        let guestbookEntries = JSON.parse(localStorage.getItem('guestbookEntries')) || [];
+        
+        function initGuestBook() {
+            document.getElementById('guestbookForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('guestName').value.trim();
+                const city = document.getElementById('guestCity').value.trim();
+                const message = document.getElementById('guestMessage').value.trim();
+                
+                if (!name || !message) {
+                    showNotification('Iltimos, majburiy maydonlarni to\'ldiring!', 'error');
+                    return;
+                }
+                
+                const entry = {
+                    id: Date.now(),
+                    name: name,
+                    city: city || 'Noma\'lum',
+                    message: message,
+                    date: new Date().toLocaleDateString('uz-UZ'),
+                    time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+                };
+                
+                guestbookEntries.unshift(entry);
+                saveGuestbookEntries();
+                displayGuestbookEntries();
+                
+                this.reset();
+                showNotification('Xotirangiz muvaffaqiyatli qo\'shildi!', 'success');
+            });
+            
+            displayGuestbookEntries();
+        }
+        
+        function displayGuestbookEntries() {
+            const entriesDiv = document.getElementById('guestbookEntries');
+            const emptyDiv = document.getElementById('emptyGuestbook');
+            
+            if (guestbookEntries.length === 0) {
+                emptyDiv.style.display = 'block';
+                entriesDiv.style.display = 'none';
+                return;
+            }
+            
+            emptyDiv.style.display = 'none';
+            entriesDiv.style.display = 'block';
+            
+            entriesDiv.innerHTML = guestbookEntries.map(entry => `
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center">
+                                <span class="text-white font-bold text-lg">${entry.name.charAt(0).toUpperCase()}</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">${entry.name}</h4>
+                                <p class="text-sm text-gray-600">${entry.city}</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            ${entry.date} ${entry.time}
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">${entry.message}</p>
+                </div>
+            `).join('');
+        }
+        
+        function saveGuestbookEntries() {
+            localStorage.setItem('guestbookEntries', JSON.stringify(guestbookEntries));
+        }
+        
+        // Weather Widget
+        function initWeatherWidget() {
+            // Simulate weather data for Andijan
+            const weatherData = {
+                temp: Math.floor(Math.random() * 30) + 5, // 5-35°C
+                desc: ['Quyoshli', 'Bulutli', 'Yomgirli', 'Qorli', 'Shamolli'][Math.floor(Math.random() * 5)],
+                location: 'Andijon, O\'zbekiston'
+            };
+            
+            document.getElementById('weatherTemp').textContent = `${weatherData.temp}°C`;
+            document.getElementById('weatherDesc').textContent = weatherData.desc;
+            document.getElementById('weatherLocation').textContent = weatherData.location;
+        }
+        
+        // Clock and Timer
+        let timerInterval;
+        let timerSeconds = 0;
+        
+        function initClock() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            document.getElementById('startTimer').addEventListener('click', startTimer);
+            document.getElementById('stopTimer').addEventListener('click', stopTimer);
+            document.getElementById('resetTimer').addEventListener('click', resetTimer);
+        }
+        
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('uz-UZ');
+            const date = now.toLocaleDateString('uz-UZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            document.getElementById('currentTime').textContent = time;
+            document.getElementById('currentDate').textContent = date;
+        }
+        
+        function startTimer() {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    updateTimerDisplay();
+                }, 1000);
+            }
+        }
+        
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = 0;
+            updateTimerDisplay();
+        }
+        
+        function updateTimerDisplay() {
+            const hours = Math.floor(timerSeconds / 3600);
+            const minutes = Math.floor((timerSeconds % 3600) / 60);
+            const seconds = timerSeconds % 60;
+            
+            document.getElementById('timerDisplay').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Calculator
+        let calcExpression = '';
+        
+        window.appendCalc = function(value) {
+            calcExpression += value;
+            document.getElementById('calcDisplay').value = calcExpression;
+        };
+        
+        window.clearCalc = function() {
+            calcExpression = '';
+            document.getElementById('calcDisplay').value = '';
+        };
+        
+        window.deleteLast = function() {
+            calcExpression = calcExpression.slice(0, -1);
+            document.getElementById('calcDisplay').value = calcExpression;
+        };
+        
+        window.calculateResult = function() {
+            try {
+                const result = eval(calcExpression.replace('×', '*'));
+                document.getElementById('calcDisplay').value = result;
+                calcExpression = result.toString();
+            } catch (error) {
+                document.getElementById('calcDisplay').value = 'Xatolik';
+                calcExpression = '';
+            }
+        };
+        
+        // Calendar and Booking System
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        
+        function initCalendar() {
+            generateCalendar();
+            displayBookings();
+            
+            document.getElementById('bookingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('bookingName').value.trim();
+                const phone = document.getElementById('bookingPhone').value.trim();
+                const date = document.getElementById('bookingDate').value;
+                const time = document.getElementById('bookingTime').value;
+                const topic = document.getElementById('bookingTopic').value.trim();
+                
+                if (!name || !phone || !date || !time || !topic) {
+                    showNotification('Iltimos, barcha maydonlarni to\'ldiring!', 'error');
+                    return;
+                }
+                
+                const booking = {
+                    id: Date.now(),
+                    name: name,
+                    phone: phone,
+                    date: date,
+                    time: time,
+                    topic: topic,
+                    status: 'pending'
+                };
+                
+                bookings.push(booking);
+                saveBookings();
+                displayBookings();
+                
+                this.reset();
+                showNotification('Uchrashuv muvaffaqiyatli bron qilindi!', 'success');
+            });
+        }
+        
+        function generateCalendar() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            
+            const monthNames = [
+                'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
+                'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+            ];
+            
+            document.getElementById('currentMonth').textContent = `${year} yil ${monthNames[month]}`;
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1); // Start from Monday
+            
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+            
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = `p-2 text-center cursor-pointer rounded-lg hover:bg-blue-100 ${
+                    date.getMonth() !== month ? 'text-gray-400' : 'text-gray-800'
+                } ${date.toDateString() === now.toDateString() ? 'bg-blue-500 text-white' : ''}`;
+                dayElement.textContent = date.getDate();
+                
+                calendarDays.appendChild(dayElement);
+            }
+        }
+        
+        function displayBookings() {
+            const bookingList = document.getElementById('bookingList');
+            const emptyBookings = document.getElementById('emptyBookings');
+            
+            if (bookings.length === 0) {
+                emptyBookings.style.display = 'block';
+                bookingList.style.display = 'none';
+                return;
+            }
+            
+            emptyBookings.style.display = 'none';
+            bookingList.style.display = 'block';
+            
+            bookingList.innerHTML = bookings.map(booking => `
+                <div class="p-4 border-2 border-gray-200 rounded-xl hover:border-indigo-300 transition-all">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${booking.name}</h4>
+                            <p class="text-gray-600">${booking.phone}</p>
+                            <p class="text-sm text-gray-500 mt-1">${booking.date} - ${booking.time}</p>
+                            <p class="text-gray-700 mt-2">${booking.topic}</p>
+                        </div>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
+                            ${booking.status === 'pending' ? 'Kutilmoqda' : booking.status}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function saveBookings() {
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            updateAdminStats();
+        }
+        
+        // Admin Panel functionality
+        let isAdminLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+        const adminPassword = 'ziyodullo2024';
+        
+        function initAdminPanel() {
+            if (isAdminLoggedIn) {
+                showAdminDashboard();
+            }
+            
+            document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const password = document.getElementById('adminPassword').value;
+                
+                if (password === adminPassword) {
+                    isAdminLoggedIn = true;
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    showAdminDashboard();
+                    showNotification('Admin panelga kirish muvaffaqiyatli!', 'success');
+                } else {
+                    showNotification('Noto\'g\'ri parol!', 'error');
+                }
+            });
+            
+            // Tab switching
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabName = btn.dataset.tab;
+                    switchAdminTab(tabName);
+                });
+            });
+            
+            // Export functions
+            document.getElementById('exportBookings').addEventListener('click', () => exportData(bookings, 'bookings'));
+            document.getElementById('exportComments').addEventListener('click', () => exportData(commentsData, 'comments'));
+            document.getElementById('exportGuestbook').addEventListener('click', () => exportData(guestbookEntries, 'guestbook'));
+            document.getElementById('exportChats').addEventListener('click', () => exportData(chatMessages, 'chats'));
+            
+            // Clear functions
+            document.getElementById('clearAllBookings').addEventListener('click', () => clearData('bookings'));
+            document.getElementById('clearAllComments').addEventListener('click', () => clearData('comments'));
+            document.getElementById('clearAllData').addEventListener('click', () => clearData('all'));
+        }
+        
+        function showAdminDashboard() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            updateAdminData();
+        }
+        
+        function switchAdminTab(tabName) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                btn.classList.add('text-gray-500');
+            });
+            
+            // Hide all tab contents
+            document.querySelectorAll('.admin-tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected tab
+            const selectedBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            selectedBtn.classList.add('active', 'border-blue-500', 'text-blue-600');
+            selectedBtn.classList.remove('text-gray-500');
+            
+            const selectedContent = document.getElementById(`admin${tabName.charAt(0).toUpperCase() + tabName.slice(1)}Tab`);
+            selectedContent.classList.remove('hidden');
+            
+            updateAdminData();
+        }
+        
+        function updateAdminData() {
+            updateAdminStats();
+            displayAdminBookings();
+            displayAdminComments();
+            displayAdminGuestbook();
+            displayAdminChats();
+        }
+        
+        function updateAdminStats() {
+            document.getElementById('adminBookingsCount').textContent = bookings.length;
+            document.getElementById('adminCommentsCount').textContent = commentsData.length;
+            document.getElementById('adminGuestbookCount').textContent = guestbookEntries.length;
+            document.getElementById('adminChatCount').textContent = chatMessages.filter(msg => msg.sender === 'user').length;
+        }
+        
+        function displayAdminBookings() {
+            const list = document.getElementById('adminBookingsList');
+            if (bookings.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-8">Bron qilingan uchrashuv yo\'q</p>';
+                return;
+            }
+            
+            list.innerHTML = bookings.map(booking => `
+                <div class="bg-gray-50 p-4 rounded-xl border">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${booking.name}</h4>
+                            <p class="text-gray-600">${booking.phone}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-500">${booking.date}</p>
+                            <p class="text-sm text-gray-500">${booking.time}</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-3">${booking.topic}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+                            ${booking.status === 'pending' ? 'Kutilmoqda' : booking.status}
+                        </span>
+                        <div class="space-x-2">
+                            <button onclick="updateBookingStatus(${booking.id}, 'confirmed')" class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
+                                Tasdiqlash
+                            </button>
+                            <button onclick="updateBookingStatus(${booking.id}, 'cancelled')" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                Bekor qilish
+                            </button>
+                            <button onclick="deleteBooking(${booking.id})" class="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600">
+                                O'chirish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function displayAdminComments() {
+            const list = document.getElementById('adminCommentsList');
+            if (commentsData.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-8">Sharhlar yo\'q</p>';
+                return;
+            }
+            
+            list.innerHTML = commentsData.map(comment => `
+                <div class="bg-gray-50 p-4 rounded-xl border">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-gray-800">${comment.name}</h4>
+                        <div class="text-sm text-gray-500">
+                            ${comment.date} ${comment.time}
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-3">${comment.text}</p>
+                    <button onclick="deleteComment(${comment.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                        O'chirish
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function displayAdminGuestbook() {
+            const list = document.getElementById('adminGuestbookList');
+            if (guestbookEntries.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-8">Mehmon kitob yozuvlari yo\'q</p>';
+                return;
+            }
+            
+            list.innerHTML = guestbookEntries.map(entry => `
+                <div class="bg-gray-50 p-4 rounded-xl border">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${entry.name}</h4>
+                            <p class="text-sm text-gray-600">${entry.city}</p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            ${entry.date} ${entry.time}
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-3">${entry.message}</p>
+                    <button onclick="deleteGuestbookEntry(${entry.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                        O'chirish
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function displayAdminChats() {
+            const list = document.getElementById('adminChatsList');
+            const userMessages = chatMessages.filter(msg => msg.sender === 'user');
+            
+            if (userMessages.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-8">Foydalanuvchi xabarlari yo\'q</p>';
+                return;
+            }
+            
+            list.innerHTML = userMessages.map((msg, index) => `
+                <div class="bg-gray-50 p-4 rounded-xl border">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-gray-800">Foydalanuvchi #${index + 1}</h4>
+                        <div class="text-sm text-gray-500">${msg.time}</div>
+                    </div>
+                    <p class="text-gray-700">${msg.message}</p>
+                </div>
+            `).join('');
+        }
+        
+        // Admin action functions
+        window.updateBookingStatus = function(id, status) {
+            const booking = bookings.find(b => b.id === id);
+            if (booking) {
+                booking.status = status;
+                saveBookings();
+                displayBookings();
+                updateAdminData();
+                showNotification(`Status ${status === 'confirmed' ? 'tasdiqlandi' : 'bekor qilindi'}!`, 'success');
+            }
+        };
+        
+        window.deleteBooking = function(id) {
+            if (confirm('Bu uchrashuvni o\'chirish uchun rozimisiz?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                saveBookings();
+                displayBookings();
+                updateAdminData();
+                showNotification('Uchrashuv o\'chirildi!', 'success');
+            }
+        };
+        
+        window.deleteComment = function(id) {
+            if (confirm('Bu sharhni o\'chirish uchun rozimisiz?')) {
+                commentsData = commentsData.filter(c => c.id !== id);
+                saveCommentsData();
+                displayComments();
+                updateAdminData();
+                showNotification('Sharh o\'chirildi!', 'success');
+            }
+        };
+        
+        window.deleteGuestbookEntry = function(id) {
+            if (confirm('Bu yozuvni o\'chirish uchun rozimisiz?')) {
+                guestbookEntries = guestbookEntries.filter(e => e.id !== id);
+                saveGuestbookEntries();
+                displayGuestbookEntries();
+                updateAdminData();
+                showNotification('Yozuv o\'chirildi!', 'success');
+            }
+        };
+        
+        function exportData(data, type) {
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `${type}_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification(`${type} ma'lumotlari yuklab olindi!`, 'success');
+        }
+        
+        function clearData(type) {
+            const confirmMessage = type === 'all' ? 
+                'Barcha ma\'lumotlarni o\'chirish uchun rozimisiz? Bu amal qaytarib bo\'lmaydi!' :
+                `${type} ma'lumotlarini o'chirish uchun rozimisiz?`;
+                
+            if (confirm(confirmMessage)) {
+                if (type === 'bookings' || type === 'all') {
+                    bookings = [];
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                }
+                if (type === 'comments' || type === 'all') {
+                    commentsData = [];
+                    localStorage.setItem('commentsData', JSON.stringify(commentsData));
+                }
+                if (type === 'all') {
+                    guestbookEntries = [];
+                    chatMessages = [{
+                        sender: 'admin',
+                        message: 'Salom! Men Ziyodullo. Sizga qanday yordam bera olaman?',
+                        time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+                    }];
+                    localStorage.setItem('guestbookEntries', JSON.stringify(guestbookEntries));
+                    localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+                    likesData = {};
+                    localStorage.setItem('likesData', JSON.stringify(likesData));
+                }
+                
+                updateAdminData();
+                displayComments();
+                displayGuestbookEntries();
+                displayBookings();
+                showNotification('Ma\'lumotlar tozalandi!', 'success');
+            }
+        }
+        
         // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', () => {
             createGlobalStars();
             loadDarkMode();
             updateLikeDisplay();
             displayComments();
+            initLiveChat();
+            initGuestBook();
+            initWeatherWidget();
+            initClock();
+            initCalendar();
+            initAdminPanel();
             
             document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
         });
