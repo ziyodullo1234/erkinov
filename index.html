@@ -95,6 +95,53 @@
             }
         }
         
+        /* Cursor Stars Animation */
+        .cursor-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 12px;
+            color: #fbbf24;
+            animation: starFade 1s ease-out forwards;
+        }
+        
+        @keyframes starFade {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(251,191,36,1) 0%, rgba(251,191,36,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            animation: trailFade 0.5s ease-out forwards;
+        }
+        
+        @keyframes trailFade {
+            0% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+        }
+
         /* Oy animatsiyasi */
         .moon {
             position: fixed;
@@ -570,12 +617,20 @@
                     <a href="#books" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Kitoblar</a>
                     <a href="#hobbies" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Hobbiylar</a>
 
-                    <a href="#guestbook" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Mehmon kitobi</a>
-                    <a href="#widgets" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Widgets</a>
-                    <a href="#admin" class="text-gray-700 hover:text-red-600 transition-all duration-300 font-medium">Admin</a>
-                    <a href="#booking" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Bron qilish</a>
+
+
+
                     <a href="#comments" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Sharhlar</a>
                     <a href="#contact" class="text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium">Aloqa</a>
+                </div>
+                
+                <!-- Online Users Counter -->
+                <div class="flex items-center space-x-3 bg-green-100 px-4 py-2 rounded-full">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-green-700 font-semibold text-sm">
+                        <i class="fas fa-users mr-1"></i>
+                        <span id="onlineCount">1</span> online
+                    </span>
                 </div>
                 <button class="md:hidden text-gray-700 hover:text-purple-600 transition-colors">
                     <i class="fas fa-bars text-xl"></i>
@@ -1061,6 +1116,118 @@
 
 
 
+    <!-- Music Player -->
+    <div id="musicPlayer" class="fixed bottom-6 left-6 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 w-80 transform transition-all duration-300 hidden" id="playerContainer">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-music text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-sm">Fon Musiqasi</h4>
+                        <p class="text-xs text-gray-600" id="currentSong">Tanlang...</p>
+                    </div>
+                </div>
+                <button onclick="toggleMusicPlayer()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <div class="bg-gray-200 rounded-full h-2 mb-2">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 0%" id="progressBar"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-center space-x-4 mb-4">
+                <button onclick="previousSong()" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button onclick="togglePlay()" class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white hover:shadow-lg" id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button onclick="nextSong()" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-volume-down text-gray-400 text-sm"></i>
+                    <input type="range" min="0" max="100" value="30" class="flex-1" id="volumeSlider">
+                    <i class="fas fa-volume-up text-gray-400 text-sm"></i>
+                </div>
+                <button onclick="toggleRepeat()" class="ml-4 text-gray-400 hover:text-purple-600" id="repeatBtn">
+                    <i class="fas fa-redo text-sm"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Music Player Toggle Button -->
+        <div id="musicToggleBtn">
+            <button onclick="toggleMusicPlayer()" class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110">
+                <i class="fas fa-music text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Games Modal -->
+    <div id="gamesModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-3xl font-bold playfair">🎯 Mini O'yinlar</h2>
+                    <button onclick="closeGames()" class="text-white hover:text-gray-200 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="mt-2 opacity-90">Dam olish va ko'ngilochar o'yinlar</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <button onclick="startGame('snake')" class="p-6 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl hover:shadow-lg transition-all text-center">
+                        <i class="fas fa-seedling text-4xl text-green-600 mb-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Snake O'yini</h3>
+                        <p class="text-gray-600 text-sm">Klasik ilon o'yini</p>
+                    </button>
+                    
+                    <button onclick="startGame('2048')" class="p-6 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl hover:shadow-lg transition-all text-center">
+                        <i class="fas fa-th text-4xl text-blue-600 mb-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">2048 O'yini</h3>
+                        <p class="text-gray-600 text-sm">Raqamlarni birlashtiring</p>
+                    </button>
+                    
+                    <button onclick="startGame('memory')" class="p-6 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl hover:shadow-lg transition-all text-center">
+                        <i class="fas fa-brain text-4xl text-purple-600 mb-3"></i>
+                        <h3 class="text-xl font-bold text-gray-800">Xotira O'yini</h3>
+                        <p class="text-gray-600 text-sm">Kartalarni eslang</p>
+                    </button>
+                </div>
+                
+                <!-- Game Container -->
+                <div id="gameContainer" class="bg-gray-100 rounded-2xl p-6 min-h-96 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 id="gameTitle" class="text-2xl font-bold"></h3>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-white px-3 py-1 rounded-lg">Score: <span id="gameScore">0</span></span>
+                            <button onclick="resetGame()" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-redo mr-1"></i>Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div id="gameBoard"></div>
+                    <div id="gameControls" class="mt-4 text-center text-gray-600"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Live Chat Widget -->
     <div id="liveChatWidget" class="fixed bottom-6 right-6 z-50">
         <div id="chatToggle" class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-2xl hover:scale-110 transition-all duration-300">
@@ -1092,142 +1259,11 @@
         </div>
     </div>
 
-    <!-- Guest Book Section -->
-    <section id="guestbook" class="py-24 bg-gradient-to-br from-green-50 to-teal-100 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <div class="fade-in-left mb-4">
-                    <span class="text-green-600 font-semibold text-lg tracking-wide uppercase">📖 Xotiralar</span>
-                </div>
-                <div class="fade-in-right">
-                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Mehmon Kitobi</h2>
-                    <div class="w-32 h-1 bg-gradient-to-r from-green-500 to-teal-500 mx-auto rounded-full"></div>
-                    <p class="text-xl text-gray-600 mt-6">Tashrif buyurganingiz uchun xotirani qoldiring!</p>
-                </div>
-            </div>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-3xl shadow-2xl p-8 mb-12">
-                    <form id="guestbookForm" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Ismingiz *</label>
-                                <input type="text" id="guestName" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Shahar</label>
-                                <input type="text" id="guestCity" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Xabaringiz *</label>
-                            <textarea id="guestMessage" required rows="4" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 outline-none resize-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all">
-                            <i class="fas fa-feather-alt mr-3"></i>Xotira qoldirish
-                        </button>
-                    </form>
-                </div>
-                
-                <div id="guestbookEntries" class="space-y-6"></div>
-                
-                <div id="emptyGuestbook" class="text-center py-12 bg-white rounded-3xl shadow-lg">
-                    <i class="fas fa-book-open text-6xl text-gray-300 mb-6"></i>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Birinchi xotira qoldiring!</h3>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Widgets Section -->
-    <section id="widgets" class="py-24 bg-white relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <div class="fade-in-left mb-4">
-                    <span class="text-blue-600 font-semibold text-lg tracking-wide uppercase">🛠️ Foydali Vositalar</span>
-                </div>
-                <div class="fade-in-right">
-                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Widgets</h2>
-                    <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
-                </div>
-            </div>
-            
-            <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                <!-- Weather Widget -->
-                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 text-white">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold">Ob-havo</h3>
-                        <i class="fas fa-cloud-sun text-3xl"></i>
-                    </div>
-                    <div id="weatherInfo">
-                        <div class="text-center">
-                            <div class="text-4xl mb-2" id="weatherTemp">--°C</div>
-                            <div class="text-lg mb-4" id="weatherDesc">Yuklanmoqda...</div>
-                            <div class="text-sm" id="weatherLocation">Andijon, O'zbekiston</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Clock Widget -->
-                <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 text-white">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold">Soat</h3>
-                        <i class="fas fa-clock text-3xl"></i>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl mb-2 font-mono" id="currentTime">--:--:--</div>
-                        <div class="text-lg mb-4" id="currentDate">--- --- --</div>
-                        <div class="space-x-2">
-                            <button id="startTimer" class="bg-white/20 px-4 py-2 rounded-lg">Start</button>
-                            <button id="stopTimer" class="bg-white/20 px-4 py-2 rounded-lg">Stop</button>
-                            <button id="resetTimer" class="bg-white/20 px-4 py-2 rounded-lg">Reset</button>
-                        </div>
-                        <div class="mt-4">
-                            <div class="text-sm">Timer: <span id="timerDisplay">00:00:00</span></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Calculator Widget -->
-                <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl p-8 text-white">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold">Kalkulyator</h3>
-                        <i class="fas fa-calculator text-3xl"></i>
-                    </div>
-                    <div class="space-y-4">
-                        <input type="text" id="calcDisplay" readonly class="w-full bg-black/30 text-right p-4 rounded-lg text-2xl font-mono">
-                        <div class="grid grid-cols-4 gap-2">
-                            <button class="calc-btn bg-red-500 hover:bg-red-600 p-3 rounded-lg font-bold" onclick="clearCalc()">C</button>
-                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('/')">/</button>
-                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('*')">×</button>
-                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="deleteLast()">⌫</button>
-                            
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('7')">7</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('8')">8</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('9')">9</button>
-                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('-')">-</button>
-                            
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('4')">4</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('5')">5</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('6')">6</button>
-                            <button class="calc-btn bg-orange-500 hover:bg-orange-600 p-3 rounded-lg font-bold" onclick="appendCalc('+')">+</button>
-                            
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('1')">1</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('2')">2</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('3')">3</button>
-                            <button class="calc-btn bg-green-500 hover:bg-green-600 p-3 rounded-lg font-bold row-span-2" onclick="calculateResult()">=</button>
-                            
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold col-span-2" onclick="appendCalc('0')">0</button>
-                            <button class="calc-btn bg-gray-600 hover:bg-gray-500 p-3 rounded-lg font-bold" onclick="appendCalc('.')">.</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Admin Panel -->
-    <section id="admin" class="py-24 bg-gradient-to-br from-red-50 to-orange-100 relative">
+
+
+
         <div class="container mx-auto px-6">
             <div class="text-center mb-20">
                 <div class="fade-in-left mb-4">
@@ -1368,151 +1404,7 @@
         </div>
     </section>
 
-    <!-- Booking Section -->
-    <section id="booking" class="py-24 bg-gradient-to-br from-indigo-50 to-blue-100 relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <div class="fade-in-left mb-4">
-                    <span class="text-indigo-600 font-semibold text-lg tracking-wide uppercase">📅 Uchrashuv</span>
-                </div>
-                <div class="fade-in-right">
-                    <h2 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6 playfair">Vaqt Bron Qilish</h2>
-                    <div class="w-32 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-xl text-gray-600 mt-6">Men bilan uchrashuv vaqtini belgilang</p>
-                </div>
-            </div>
-            
-            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
-                <!-- Kalendar -->
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Kalendar</h3>
-                    <div id="calendar" class="space-y-4">
-                        <!-- Kalendar bu yerda bo'ladi -->
-                        <div class="text-center p-8 bg-gray-50 rounded-2xl">
-                            <i class="fas fa-calendar-alt text-4xl text-gray-400 mb-4"></i>
-                            <div class="text-lg font-semibold text-gray-700" id="currentMonth">2025 yil Yanvar</div>
-                            <div class="grid grid-cols-7 gap-2 mt-6 text-sm">
-                                <div class="p-2 font-semibold text-gray-600">Du</div>
-                                <div class="p-2 font-semibold text-gray-600">Se</div>
-                                <div class="p-2 font-semibold text-gray-600">Cho</div>
-                                <div class="p-2 font-semibold text-gray-600">Pa</div>
-                                <div class="p-2 font-semibold text-gray-600">Ju</div>
-                                <div class="p-2 font-semibold text-gray-600">Sha</div>
-                                <div class="p-2 font-semibold text-gray-600">Ya</div>
-                            </div>
-                            <div class="grid grid-cols-7 gap-2 mt-2" id="calendarDays">
-                                <!-- Kunlar bu yerda dinamik qo'shiladi -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Booking Form -->
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-gray-800">🎯 Uchrashuv Bron Qilish</h3>
-                        <div class="flex items-center space-x-2 text-sm">
-                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span class="text-green-600 font-semibold">Live saqlash</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-6 bg-blue-50 p-3 rounded-lg">
-                        <i class="fas fa-info-circle mr-2 text-blue-600"></i>
-                        Sizning xotirangiz saytga kirgan barcha foydalanuvchilarga ko'rinadi va live saqlanadi!
-                    </p>
-                    <form id="bookingForm" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ismingiz *</label>
-                            <input type="text" id="bookingName" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Telefon *</label>
-                            <input type="tel" id="bookingPhone" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Sana *</label>
-                                <input type="date" id="bookingDate" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Vaqt *</label>
-                                <select id="bookingTime" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none">
-                                    <option value="">Vaqtni tanlang</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Mavzu *</label>
-                            <textarea id="bookingTopic" required rows="4" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 outline-none resize-none" placeholder="Nima haqida gaplashmoqchisiz?"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all">
-                            <i class="fas fa-calendar-check mr-3"></i>Bron Qilish
-                        </button>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- Live Bookings Display -->
-            <div class="max-w-6xl mx-auto mt-12">
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 class="text-3xl font-bold text-gray-800 playfair mb-2">📅 Live Uchrashuvlar</h3>
-                            <p class="text-gray-600">Barcha foydalanuvchilar ko'rgan holda bron qilingan uchrashuvlar</p>
-                        </div>
-                        <div class="flex items-center space-x-3 bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full">
-                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                            <span class="font-semibold text-green-700">Live Ko'rsatilmoqda</span>
-                            <span class="bg-white px-3 py-1 rounded-full text-sm font-bold text-gray-700" id="bookingCount">0</span>
-                        </div>
-                    </div>
-                    
-                    <div id="bookingList" class="space-y-6"></div>
-                    
-                    <div id="emptyBookings" class="text-center py-12">
-                        <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
-                            <i class="fas fa-calendar-times text-4xl text-gray-400"></i>
-                        </div>
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4 playfair">Hali xotira qoldirilmagan</h4>
-                        <p class="text-gray-600 text-lg">Birinchi xotira qoldiruvchi bo'ling! Sizning xotirangiz barcha foydalanuvchilarga ko'rinadi.</p>
-                    </div>
-                    
-                    <!-- Booking Statistics -->
-                    <div class="mt-8 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl">
-                        <div class="grid md:grid-cols-4 gap-6 text-center">
-                            <div>
-                                <div class="text-2xl font-bold text-indigo-600" id="totalBookings">0</div>
-                                <p class="text-sm text-gray-600">Jami xotiralar</p>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold text-green-600" id="todayBookings">0</div>
-                                <p class="text-sm text-gray-600">Bugungi</p>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold text-purple-600" id="thisWeekBookings">0</div>
-                                <p class="text-sm text-gray-600">Shu hafta</p>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold text-orange-600" id="pendingBookings">0</div>
-                                <p class="text-sm text-gray-600">Kutilmoqda</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Comments Section -->
     <section id="comments" class="py-24 bg-gradient-to-br from-indigo-50 to-purple-100 relative">
@@ -2188,79 +2080,7 @@
             localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
         }
         
-        // Guest Book functionality
-        let guestbookEntries = JSON.parse(localStorage.getItem('guestbookEntries')) || [];
-        
-        function initGuestBook() {
-            document.getElementById('guestbookForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('guestName').value.trim();
-                const city = document.getElementById('guestCity').value.trim();
-                const message = document.getElementById('guestMessage').value.trim();
-                
-                if (!name || !message) {
-                    showNotification('Iltimos, majburiy maydonlarni to\'ldiring!', 'error');
-                    return;
-                }
-                
-                const entry = {
-                    id: Date.now(),
-                    name: name,
-                    city: city || 'Noma\'lum',
-                    message: message,
-                    date: new Date().toLocaleDateString('uz-UZ'),
-                    time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
-                };
-                
-                guestbookEntries.unshift(entry);
-                saveGuestbookEntries();
-                displayGuestbookEntries();
-                
-                this.reset();
-                showNotification('Xotirangiz muvaffaqiyatli qo\'shildi!', 'success');
-            });
-            
-            displayGuestbookEntries();
-        }
-        
-        function displayGuestbookEntries() {
-            const entriesDiv = document.getElementById('guestbookEntries');
-            const emptyDiv = document.getElementById('emptyGuestbook');
-            
-            if (guestbookEntries.length === 0) {
-                emptyDiv.style.display = 'block';
-                entriesDiv.style.display = 'none';
-                return;
-            }
-            
-            emptyDiv.style.display = 'none';
-            entriesDiv.style.display = 'block';
-            
-            entriesDiv.innerHTML = guestbookEntries.map(entry => `
-                <div class="bg-white p-6 rounded-2xl shadow-lg">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-lg">${entry.name.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-gray-800">${entry.name}</h4>
-                                <p class="text-sm text-gray-600">${entry.city}</p>
-                            </div>
-                        </div>
-                        <div class="text-sm text-gray-500">
-                            ${entry.date} ${entry.time}
-                        </div>
-                    </div>
-                    <p class="text-gray-700 leading-relaxed">${entry.message}</p>
-                </div>
-            `).join('');
-        }
-        
-        function saveGuestbookEntries() {
-            localStorage.setItem('guestbookEntries', JSON.stringify(guestbookEntries));
-        }
+
         
         // Weather Widget
         function initWeatherWidget() {
@@ -2357,203 +2177,7 @@
             }
         };
         
-        // Calendar and Booking System
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        
-        function initCalendar() {
-            generateCalendar();
-            displayBookings();
-            
-            document.getElementById('bookingForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('bookingName').value.trim();
-                const phone = document.getElementById('bookingPhone').value.trim();
-                const date = document.getElementById('bookingDate').value;
-                const time = document.getElementById('bookingTime').value;
-                const topic = document.getElementById('bookingTopic').value.trim();
-                
-                if (!name || !phone || !date || !time || !topic) {
-                    showNotification('Iltimos, barcha maydonlarni to\'ldiring!', 'error');
-                    return;
-                }
-                
-                const booking = {
-                    id: Date.now(),
-                    name: name,
-                    phone: phone,
-                    date: date,
-                    time: time,
-                    topic: topic,
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                };
-                
-                bookings.push(booking);
-                saveBookings();
-                displayBookings();
-                
-                // Real-time yangilanish uchun barcha ochiq sahifalarni xabardor qilish
-                const event = new CustomEvent('bookingAdded', { detail: booking });
-                window.dispatchEvent(event);
-                
-                this.reset();
-                showNotification(`✅ Uchrashuv muvaffaqiyatli bron qilindi! Barcha foydalanuvchilar sizning xotirangizni ko'rmoqda.`, 'success');
-                
-                // Live yangilanish effekti
-                setTimeout(() => {
-                    const newBookingElement = document.querySelector('#bookingList > div:first-child');
-                    if (newBookingElement) {
-                        newBookingElement.classList.add('animate-pulse', 'bg-gradient-to-r', 'from-green-100', 'to-blue-100');
-                        setTimeout(() => {
-                            newBookingElement.classList.remove('animate-pulse', 'from-green-100', 'to-blue-100');
-                        }, 3000);
-                    }
-                }, 100);
-            });
-        }
-        
-        function generateCalendar() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
-            
-            const monthNames = [
-                'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
-                'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
-            ];
-            
-            document.getElementById('currentMonth').textContent = `${year} yil ${monthNames[month]}`;
-            
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const startDate = new Date(firstDay);
-            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1); // Start from Monday
-            
-            const calendarDays = document.getElementById('calendarDays');
-            calendarDays.innerHTML = '';
-            
-            for (let i = 0; i < 42; i++) {
-                const date = new Date(startDate);
-                date.setDate(startDate.getDate() + i);
-                
-                const dayElement = document.createElement('div');
-                dayElement.className = `p-2 text-center cursor-pointer rounded-lg hover:bg-blue-100 ${
-                    date.getMonth() !== month ? 'text-gray-400' : 'text-gray-800'
-                } ${date.toDateString() === now.toDateString() ? 'bg-blue-500 text-white' : ''}`;
-                dayElement.textContent = date.getDate();
-                
-                calendarDays.appendChild(dayElement);
-            }
-        }
-        
-        function displayBookings() {
-            const bookingList = document.getElementById('bookingList');
-            const emptyBookings = document.getElementById('emptyBookings');
-            
-            // Statistikalarni yangilash
-            updateBookingStats();
-            
-            if (bookings.length === 0) {
-                emptyBookings.style.display = 'block';
-                bookingList.style.display = 'none';
-                return;
-            }
-            
-            emptyBookings.style.display = 'none';
-            bookingList.style.display = 'block';
-            
-            bookingList.innerHTML = bookings
-                .sort((a, b) => new Date(b.date) - new Date(a.date)) // Yangi bronlar yuqorida
-                .map(booking => `
-                <div class="p-6 border-2 border-gray-200 rounded-2xl hover:border-indigo-300 transition-all bg-gradient-to-r from-white to-blue-50 hover:shadow-lg">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-xl">${booking.name.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-xl">${booking.name}</h4>
-                                <p class="text-gray-600 flex items-center">
-                                    <i class="fas fa-phone mr-2"></i>${booking.phone}
-                                </p>
-                                <p class="text-sm text-indigo-600 mt-1 flex items-center">
-                                    <i class="fas fa-calendar mr-2"></i>${new Date(booking.date).toLocaleDateString('uz-UZ', { 
-                                        weekday: 'long', 
-                                        year: 'numeric', 
-                                        month: 'long', 
-                                        day: 'numeric' 
-                                    })}
-                                </p>
-                                <p class="text-sm text-purple-600 flex items-center">
-                                    <i class="fas fa-clock mr-2"></i>${booking.time}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full text-sm font-bold shadow-lg">
-                                <i class="fas fa-hourglass-half mr-1"></i>
-                                ${booking.status === 'pending' ? 'Kutilmoqda' : booking.status}
-                            </span>
-                            <p class="text-xs text-gray-500 mt-2">
-                                Qo'shilgan: ${new Date(booking.id).toLocaleString('uz-UZ')}
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white p-4 rounded-xl border-l-4 border-indigo-500">
-                        <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-comment-dots mr-2 text-indigo-600"></i>Mavzu:
-                        </h5>
-                        <p class="text-gray-700 leading-relaxed">${booking.topic}</p>
-                    </div>
-                    
-                    <div class="mt-4 flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-sm text-gray-500">
-                            <i class="fas fa-eye"></i>
-                            <span>Barcha foydalanuvchilar ko'rmoqda</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                            <span class="text-sm text-green-600 font-semibold">Live</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function saveBookings() {
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-            updateAdminStats();
-            updateBookingStats();
-        }
-        
-        // Booking statistikalarini yangilash
-        function updateBookingStats() {
-            const today = new Date();
-            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-            const todayStr = new Date().toISOString().split('T')[0];
-            
-            const totalBookings = bookings.length;
-            const todayBookings = bookings.filter(b => b.date === todayStr).length;
-            const thisWeekBookings = bookings.filter(b => new Date(b.date) >= startOfWeek).length;
-            const pendingBookings = bookings.filter(b => b.status === 'pending').length;
-            
-            // DOM elementlarini yangilash
-            const elements = {
-                totalBookings: document.getElementById('totalBookings'),
-                todayBookings: document.getElementById('todayBookings'), 
-                thisWeekBookings: document.getElementById('thisWeekBookings'),
-                pendingBookings: document.getElementById('pendingBookings'),
-                bookingCount: document.getElementById('bookingCount')
-            };
-            
-            if (elements.totalBookings) elements.totalBookings.textContent = totalBookings;
-            if (elements.todayBookings) elements.todayBookings.textContent = todayBookings;
-            if (elements.thisWeekBookings) elements.thisWeekBookings.textContent = thisWeekBookings;
-            if (elements.pendingBookings) elements.pendingBookings.textContent = pendingBookings;
-            if (elements.bookingCount) elements.bookingCount.textContent = totalBookings;
-        }
+
         
         // Admin Panel functionality
         let isAdminLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
@@ -2629,58 +2253,16 @@
         
         function updateAdminData() {
             updateAdminStats();
-            displayAdminBookings();
             displayAdminComments();
-            displayAdminGuestbook();
             displayAdminChats();
         }
         
         function updateAdminStats() {
-            document.getElementById('adminBookingsCount').textContent = bookings.length;
             document.getElementById('adminCommentsCount').textContent = commentsData.length;
-            document.getElementById('adminGuestbookCount').textContent = guestbookEntries.length;
             document.getElementById('adminChatCount').textContent = chatMessages.filter(msg => msg.sender === 'user').length;
         }
         
-        function displayAdminBookings() {
-            const list = document.getElementById('adminBookingsList');
-            if (bookings.length === 0) {
-                list.innerHTML = '<p class="text-gray-500 text-center py-8">Bron qilingan uchrashuv yo\'q</p>';
-                return;
-            }
-            
-            list.innerHTML = bookings.map(booking => `
-                <div class="bg-gray-50 p-4 rounded-xl border">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="font-bold text-gray-800">${booking.name}</h4>
-                            <p class="text-gray-600">${booking.phone}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-sm text-gray-500">${booking.date}</p>
-                            <p class="text-sm text-gray-500">${booking.time}</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 mb-3">${booking.topic}</p>
-                    <div class="flex justify-between items-center">
-                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
-                            ${booking.status === 'pending' ? 'Kutilmoqda' : booking.status}
-                        </span>
-                        <div class="space-x-2">
-                            <button onclick="updateBookingStatus(${booking.id}, 'confirmed')" class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
-                                Tasdiqlash
-                            </button>
-                            <button onclick="updateBookingStatus(${booking.id}, 'cancelled')" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
-                                Bekor qilish
-                            </button>
-                            <button onclick="deleteBooking(${booking.id})" class="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600">
-                                O'chirish
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+
         
         function displayAdminComments() {
             const list = document.getElementById('adminCommentsList');
@@ -2705,31 +2287,7 @@
             `).join('');
         }
         
-        function displayAdminGuestbook() {
-            const list = document.getElementById('adminGuestbookList');
-            if (guestbookEntries.length === 0) {
-                list.innerHTML = '<p class="text-gray-500 text-center py-8">Mehmon kitob yozuvlari yo\'q</p>';
-                return;
-            }
-            
-            list.innerHTML = guestbookEntries.map(entry => `
-                <div class="bg-gray-50 p-4 rounded-xl border">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="font-bold text-gray-800">${entry.name}</h4>
-                            <p class="text-sm text-gray-600">${entry.city}</p>
-                        </div>
-                        <div class="text-sm text-gray-500">
-                            ${entry.date} ${entry.time}
-                        </div>
-                    </div>
-                    <p class="text-gray-700 mb-3">${entry.message}</p>
-                    <button onclick="deleteGuestbookEntry(${entry.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
-                        O'chirish
-                    </button>
-                </div>
-            `).join('');
-        }
+
         
         function displayAdminChats() {
             const list = document.getElementById('adminChatsList');
@@ -2752,26 +2310,6 @@
         }
         
         // Admin action functions
-        window.updateBookingStatus = function(id, status) {
-            const booking = bookings.find(b => b.id === id);
-            if (booking) {
-                booking.status = status;
-                saveBookings();
-                displayBookings();
-                updateAdminData();
-                showNotification(`Status ${status === 'confirmed' ? 'tasdiqlandi' : 'bekor qilindi'}!`, 'success');
-            }
-        };
-        
-        window.deleteBooking = function(id) {
-            if (confirm('Bu uchrashuvni o\'chirish uchun rozimisiz?')) {
-                bookings = bookings.filter(b => b.id !== id);
-                saveBookings();
-                displayBookings();
-                updateAdminData();
-                showNotification('Uchrashuv o\'chirildi!', 'success');
-            }
-        };
         
         window.deleteComment = function(id) {
             if (confirm('Bu sharhni o\'chirish uchun rozimisiz?')) {
@@ -2783,15 +2321,7 @@
             }
         };
         
-        window.deleteGuestbookEntry = function(id) {
-            if (confirm('Bu yozuvni o\'chirish uchun rozimisiz?')) {
-                guestbookEntries = guestbookEntries.filter(e => e.id !== id);
-                saveGuestbookEntries();
-                displayGuestbookEntries();
-                updateAdminData();
-                showNotification('Yozuv o\'chirildi!', 'success');
-            }
-        };
+
         
         function exportData(data, type) {
             const dataStr = JSON.stringify(data, null, 2);
@@ -2813,22 +2343,16 @@
                 `${type} ma'lumotlarini o'chirish uchun rozimisiz?`;
                 
             if (confirm(confirmMessage)) {
-                if (type === 'bookings' || type === 'all') {
-                    bookings = [];
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
-                }
                 if (type === 'comments' || type === 'all') {
                     commentsData = [];
                     localStorage.setItem('commentsData', JSON.stringify(commentsData));
                 }
                 if (type === 'all') {
-                    guestbookEntries = [];
                     chatMessages = [{
                         sender: 'admin',
                         message: 'Salom! Men Ziyodullo. Sizga qanday yordam bera olaman?',
                         time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
                     }];
-                    localStorage.setItem('guestbookEntries', JSON.stringify(guestbookEntries));
                     localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
                     likesData = {};
                     localStorage.setItem('likesData', JSON.stringify(likesData));
@@ -2836,8 +2360,6 @@
                 
                 updateAdminData();
                 displayComments();
-                displayGuestbookEntries();
-                displayBookings();
                 showNotification('Ma\'lumotlar tozalandi!', 'success');
             }
         }
@@ -2849,10 +2371,8 @@
             updateLikeDisplay();
             displayComments();
             initLiveChat();
-            initGuestBook();
             initWeatherWidget();
             initClock();
-            initCalendar();
             initAdminPanel();
             
             document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
@@ -2882,23 +2402,7 @@
             });
         });
         
-        // Real-time events uchun listener qo'shish
-        window.addEventListener('bookingAdded', function(e) {
-            // Yangi booking qo'shilganda barcha sahifalar yangilanadi
-            if (e.detail) {
-                console.log('Yangi xotira qoldirildi:', e.detail.name);
-                displayBookings();
-            }
-        });
-        
-        // Har 30 soniyada yangilanishni tekshirish
-        setInterval(() => {
-            const savedBookings = JSON.parse(localStorage.getItem('bookings')) || [];
-            if (savedBookings.length !== bookings.length) {
-                bookings = savedBookings;
-                displayBookings();
-            }
-        }, 30000);
+
 
         // Form validation feedback
         const inputs = document.querySelectorAll('input, textarea');
@@ -2911,6 +2415,720 @@
                 this.style.borderColor = '';
             });
         });
+        
+        // Music Player functionality
+        let currentAudio = null;
+        let isPlaying = false;
+        let currentSongIndex = 0;
+        let isRepeat = false;
+        let musicPlayerVisible = false;
+        
+        // Simple background sounds (using Web Audio API for generated tones)
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const songs = [
+            { name: "🎵 Tinch Musiqa", type: "tone", freq: 440 },
+            { name: "🌊 Okean To'lqini", type: "tone", freq: 220 },
+            { name: "🌿 Tabiat Tovushi", type: "tone", freq: 330 },
+            { name: "☔ Yomg'ir", type: "noise" },
+            { name: "🔥 Olov", type: "noise" }
+        ];
+        
+        function toggleMusicPlayer() {
+            musicPlayerVisible = !musicPlayerVisible;
+            const container = document.getElementById('playerContainer');
+            const toggleBtn = document.getElementById('musicToggleBtn');
+            
+            if (musicPlayerVisible) {
+                container.classList.remove('hidden');
+                toggleBtn.style.opacity = '0.7';
+            } else {
+                container.classList.add('hidden');
+                toggleBtn.style.opacity = '1';
+            }
+        }
+        
+        function createTone(frequency, duration = 1000) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration / 1000);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function createNoise() {
+            const bufferSize = audioContext.sampleRate * 2;
+            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            
+            const whiteNoise = audioContext.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.05;
+            
+            whiteNoise.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            return { source: whiteNoise, gainNode };
+        }
+        
+        function togglePlay() {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                playMusic();
+            }
+        }
+        
+        function playMusic() {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const song = songs[currentSongIndex];
+            document.getElementById('currentSong').textContent = song.name;
+            
+            if (song.type === 'tone') {
+                currentAudio = createTone(song.freq, 60000); // 1 minute loop
+                setTimeout(() => {
+                    if (isPlaying) playMusic(); // Loop
+                }, 60000);
+            } else if (song.type === 'noise') {
+                currentAudio = createNoise();
+                currentAudio.source.start();
+            }
+            
+            isPlaying = true;
+            document.getElementById('playBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            
+            // Simulate progress
+            simulateProgress();
+        }
+        
+        function pauseMusic() {
+            if (currentAudio) {
+                if (currentAudio.oscillator) {
+                    currentAudio.oscillator.stop();
+                } else if (currentAudio.source) {
+                    currentAudio.source.stop();
+                }
+            }
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i>';
+        }
+        
+        function nextSong() {
+            pauseMusic();
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            if (isPlaying || document.getElementById('playBtn').innerHTML.includes('pause')) {
+                setTimeout(playMusic, 300);
+            }
+            updateSongDisplay();
+        }
+        
+        function previousSong() {
+            pauseMusic();
+            currentSongIndex = currentSongIndex === 0 ? songs.length - 1 : currentSongIndex - 1;
+            if (isPlaying || document.getElementById('playBtn').innerHTML.includes('pause')) {
+                setTimeout(playMusic, 300);
+            }
+            updateSongDisplay();
+        }
+        
+        function updateSongDisplay() {
+            document.getElementById('currentSong').textContent = songs[currentSongIndex].name;
+        }
+        
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            const repeatBtn = document.getElementById('repeatBtn');
+            if (isRepeat) {
+                repeatBtn.classList.add('text-purple-600');
+                repeatBtn.classList.remove('text-gray-400');
+            } else {
+                repeatBtn.classList.remove('text-purple-600');
+                repeatBtn.classList.add('text-gray-400');
+            }
+        }
+        
+        function simulateProgress() {
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const currentTimeEl = document.getElementById('currentTime');
+            const totalTimeEl = document.getElementById('totalTime');
+            
+            totalTimeEl.textContent = '1:00';
+            
+            const interval = setInterval(() => {
+                if (!isPlaying) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                progress += 1.67; // 60 seconds / 100% = 1.67% per second
+                progressBar.style.width = progress + '%';
+                
+                const currentSeconds = Math.floor(progress * 0.6);
+                currentTimeEl.textContent = `0:${currentSeconds.toString().padStart(2, '0')}`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    if (isRepeat || currentSongIndex < songs.length - 1) {
+                        if (!isRepeat) nextSong();
+                        else {
+                            progress = 0;
+                            simulateProgress();
+                        }
+                    } else {
+                        pauseMusic();
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Volume control
+        document.getElementById('volumeSlider').addEventListener('input', function(e) {
+            const volume = e.target.value / 100;
+            if (currentAudio && currentAudio.gainNode) {
+                currentAudio.gainNode.gain.value = volume * 0.1;
+            }
+        });
+        
+        // Initialize music player
+        updateSongDisplay();
+        
+        // Cursor Stars Animation
+        let cursorStarsEnabled = true;
+        let mouseX = 0, mouseY = 0;
+        let stars = [];
+        
+        const starSymbols = ['⭐', '✨', '🌟', '💫', '⚡', '🔥', '💎', '🌙'];
+        
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (cursorStarsEnabled && Math.random() > 0.7) {
+                createCursorStar(mouseX, mouseY);
+            }
+            
+            if (Math.random() > 0.9) {
+                createCursorTrail(mouseX, mouseY);
+            }
+        });
+        
+        function createCursorStar(x, y) {
+            const star = document.createElement('div');
+            star.className = 'cursor-star';
+            star.innerHTML = starSymbols[Math.floor(Math.random() * starSymbols.length)];
+            star.style.left = (x - 6 + Math.random() * 12) + 'px';
+            star.style.top = (y - 6 + Math.random() * 12) + 'px';
+            
+            // Random rotation and size
+            const rotation = Math.random() * 360;
+            const scale = 0.5 + Math.random() * 0.5;
+            star.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+            
+            document.body.appendChild(star);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (star.parentNode) {
+                    star.parentNode.removeChild(star);
+                }
+            }, 1000);
+        }
+        
+        function createCursorTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = (x - 3) + 'px';
+            trail.style.top = (y - 3) + 'px';
+            
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                if (trail.parentNode) {
+                    trail.parentNode.removeChild(trail);
+                }
+            }, 500);
+        }
+        
+        // Click explosion effect
+        document.addEventListener('click', function(e) {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createCursorStar(
+                        e.clientX + (Math.random() - 0.5) * 30,
+                        e.clientY + (Math.random() - 0.5) * 30
+                    );
+                }, i * 50);
+            }
+        });
+        
+        // Double click creates bigger explosion
+        let clickCount = 0;
+        document.addEventListener('click', function(e) {
+            clickCount++;
+            if (clickCount === 1) {
+                setTimeout(() => {
+                    if (clickCount === 2) {
+                        // Double click explosion
+                        for (let i = 0; i < 12; i++) {
+                            setTimeout(() => {
+                                createCursorStar(
+                                    e.clientX + (Math.random() - 0.5) * 60,
+                                    e.clientY + (Math.random() - 0.5) * 60
+                                );
+                            }, i * 30);
+                        }
+                    }
+                    clickCount = 0;
+                }, 300);
+            }
+        });
+        
+        // Toggle cursor stars with keyboard shortcut
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 's' && e.ctrlKey) {
+                e.preventDefault();
+                cursorStarsEnabled = !cursorStarsEnabled;
+                showNotification(
+                    cursorStarsEnabled ? '⭐ Yulduzlar yoqildi!' : '⭐ Yulduzlar o\'chirildi!', 
+                    cursorStarsEnabled ? 'success' : 'info'
+                );
+            }
+        });
+        
+        // Online Users Counter System
+        let onlineUsers = 1; // Start with current user
+        let sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        let lastActiveTime = Date.now();
+        
+        // Simulate online users with localStorage
+        function updateOnlineUsers() {
+            const now = Date.now();
+            let usersData = JSON.parse(localStorage.getItem('onlineUsers') || '{}');
+            
+            // Clean up old users (inactive for more than 2 minutes)
+            Object.keys(usersData).forEach(userId => {
+                if (now - usersData[userId].lastActive > 120000) { // 2 minutes
+                    delete usersData[userId];
+                }
+            });
+            
+            // Add/update current user
+            usersData[sessionId] = {
+                lastActive: now,
+                joinTime: usersData[sessionId]?.joinTime || now
+            };
+            
+            // Add some realistic simulation
+            const shouldAddUser = Math.random() < 0.1; // 10% chance
+            const shouldRemoveUser = Math.random() < 0.05; // 5% chance
+            
+            if (shouldAddUser && Object.keys(usersData).length < 8) {
+                const newUserId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+                usersData[newUserId] = {
+                    lastActive: now - Math.random() * 60000, // Within last minute
+                    joinTime: now - Math.random() * 600000 // Within last 10 minutes
+                };
+            }
+            
+            if (shouldRemoveUser && Object.keys(usersData).length > 1) {
+                const userIds = Object.keys(usersData).filter(id => id !== sessionId);
+                if (userIds.length > 0) {
+                    const randomUserId = userIds[Math.floor(Math.random() * userIds.length)];
+                    delete usersData[randomUserId];
+                }
+            }
+            
+            localStorage.setItem('onlineUsers', JSON.stringify(usersData));
+            
+            // Update UI
+            const count = Object.keys(usersData).length;
+            document.getElementById('onlineCount').textContent = count;
+            
+            return count;
+        }
+        
+        // Update activity every 5 seconds
+        setInterval(() => {
+            updateOnlineUsers();
+        }, 5000);
+        
+        // Update activity on user interaction
+        document.addEventListener('mousemove', () => {
+            lastActiveTime = Date.now();
+        });
+        
+        document.addEventListener('click', () => {
+            lastActiveTime = Date.now();
+        });
+        
+        document.addEventListener('keypress', () => {
+            lastActiveTime = Date.now();
+        });
+        
+        // Initialize online counter
+        updateOnlineUsers();
+        
+        // Show online users tooltip on hover
+        document.getElementById('onlineCount').parentElement.addEventListener('mouseenter', function() {
+            const usersData = JSON.parse(localStorage.getItem('onlineUsers') || '{}');
+            const userCount = Object.keys(usersData).length;
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'absolute top-12 right-0 bg-black text-white text-xs rounded-lg px-3 py-2 z-50';
+            tooltip.innerHTML = `
+                <div class="font-semibold mb-1">👥 Online Foydalanuvchilar</div>
+                <div>${userCount} kishi saytda</div>
+                <div class="text-gray-300 text-xs mt-1">Real-time yangilanmoqda</div>
+            `;
+            
+            this.style.position = 'relative';
+            this.appendChild(tooltip);
+            
+            setTimeout(() => {
+                if (tooltip.parentNode) {
+                    tooltip.parentNode.removeChild(tooltip);
+                }
+            }, 3000);
+        });
+        
+        // Cleanup when leaving page
+        window.addEventListener('beforeunload', () => {
+            const usersData = JSON.parse(localStorage.getItem('onlineUsers') || '{}');
+            delete usersData[sessionId];
+            localStorage.setItem('onlineUsers', JSON.stringify(usersData));
+        });
+        
+        // Mini Games System
+        let currentGame = null;
+        let gameScore = 0;
+        
+        function showGames() {
+            document.getElementById('gamesModal').classList.remove('hidden');
+        }
+        
+        function closeGames() {
+            document.getElementById('gamesModal').classList.add('hidden');
+            if (currentGame) {
+                currentGame = null;
+            }
+        }
+        
+        function startGame(gameType) {
+            const gameContainer = document.getElementById('gameContainer');
+            const gameTitle = document.getElementById('gameTitle');
+            const gameBoard = document.getElementById('gameBoard');
+            const gameControls = document.getElementById('gameControls');
+            
+            gameContainer.classList.remove('hidden');
+            gameScore = 0;
+            document.getElementById('gameScore').textContent = gameScore;
+            
+            switch(gameType) {
+                case 'snake':
+                    initSnakeGame();
+                    break;
+                case '2048':
+                    init2048Game();
+                    break;
+                case 'memory':
+                    initMemoryGame();
+                    break;
+            }
+        }
+        
+        function resetGame() {
+            if (currentGame) {
+                startGame(currentGame);
+            }
+        }
+        
+        // Snake Game
+        function initSnakeGame() {
+            currentGame = 'snake';
+            document.getElementById('gameTitle').textContent = '🐍 Snake O\'yini';
+            document.getElementById('gameControls').innerHTML = 'WASD yoki o\'q tugmalari bilan o\'ynang';
+            
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = `
+                <canvas id="snakeCanvas" width="400" height="400" class="bg-green-900 rounded-lg mx-auto block" style="border: 2px solid #059669;"></canvas>
+            `;
+            
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let snake = [{x: 200, y: 200}];
+            let food = {x: 100, y: 100};
+            let direction = 'RIGHT';
+            let gameRunning = true;
+            
+            function drawSnake() {
+                ctx.fillStyle = '#10b981';
+                snake.forEach(segment => {
+                    ctx.fillRect(segment.x, segment.y, 20, 20);
+                });
+            }
+            
+            function drawFood() {
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(food.x, food.y, 20, 20);
+            }
+            
+            function moveSnake() {
+                const head = {x: snake[0].x, y: snake[0].y};
+                
+                switch(direction) {
+                    case 'UP': head.y -= 20; break;
+                    case 'DOWN': head.y += 20; break;
+                    case 'LEFT': head.x -= 20; break;
+                    case 'RIGHT': head.x += 20; break;
+                }
+                
+                // Wall collision
+                if (head.x < 0 || head.x >= 400 || head.y < 0 || head.y >= 400) {
+                    gameRunning = false;
+                    alert('O\'yin tugadi! Score: ' + gameScore);
+                    return;
+                }
+                
+                // Self collision
+                for (let segment of snake) {
+                    if (head.x === segment.x && head.y === segment.y) {
+                        gameRunning = false;
+                        alert('O\'yin tugadi! Score: ' + gameScore);
+                        return;
+                    }
+                }
+                
+                snake.unshift(head);
+                
+                // Food collision
+                if (head.x === food.x && head.y === food.y) {
+                    gameScore += 10;
+                    document.getElementById('gameScore').textContent = gameScore;
+                    food = {
+                        x: Math.floor(Math.random() * 20) * 20,
+                        y: Math.floor(Math.random() * 20) * 20
+                    };
+                } else {
+                    snake.pop();
+                }
+            }
+            
+            function gameLoop() {
+                if (!gameRunning) return;
+                
+                ctx.clearRect(0, 0, 400, 400);
+                moveSnake();
+                drawSnake();
+                drawFood();
+                
+                setTimeout(gameLoop, 150);
+            }
+            
+            // Controls
+            document.addEventListener('keydown', (e) => {
+                if (currentGame !== 'snake') return;
+                
+                switch(e.key.toLowerCase()) {
+                    case 'w':
+                    case 'arrowup':
+                        if (direction !== 'DOWN') direction = 'UP';
+                        break;
+                    case 's':
+                    case 'arrowdown':
+                        if (direction !== 'UP') direction = 'DOWN';
+                        break;
+                    case 'a':
+                    case 'arrowleft':
+                        if (direction !== 'RIGHT') direction = 'LEFT';
+                        break;
+                    case 'd':
+                    case 'arrowright':
+                        if (direction !== 'LEFT') direction = 'RIGHT';
+                        break;
+                }
+            });
+            
+            gameLoop();
+        }
+        
+        // 2048 Game
+        function init2048Game() {
+            currentGame = '2048';
+            document.getElementById('gameTitle').textContent = '🎯 2048 O\'yini';
+            document.getElementById('gameControls').innerHTML = 'WASD yoki o\'q tugmalari bilan o\'ynang';
+            
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = `
+                <div id="game2048" class="grid grid-cols-4 gap-2 max-w-md mx-auto bg-gray-800 p-4 rounded-lg">
+                    ${Array(16).fill(0).map((_, i) => `<div id="cell${i}" class="w-16 h-16 bg-gray-600 rounded flex items-center justify-center text-white font-bold text-lg"></div>`).join('')}
+                </div>
+            `;
+            
+            let grid = Array(16).fill(0);
+            
+            function addNewTile() {
+                const emptyCells = grid.map((cell, i) => cell === 0 ? i : null).filter(i => i !== null);
+                if (emptyCells.length > 0) {
+                    const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                    grid[randomCell] = Math.random() < 0.9 ? 2 : 4;
+                }
+            }
+            
+            function updateDisplay() {
+                for (let i = 0; i < 16; i++) {
+                    const cell = document.getElementById(`cell${i}`);
+                    if (grid[i] === 0) {
+                        cell.textContent = '';
+                        cell.className = 'w-16 h-16 bg-gray-600 rounded flex items-center justify-center text-white font-bold text-lg';
+                    } else {
+                        cell.textContent = grid[i];
+                        const colorClass = grid[i] <= 4 ? 'bg-yellow-500' : grid[i] <= 16 ? 'bg-orange-500' : grid[i] <= 64 ? 'bg-red-500' : 'bg-purple-500';
+                        cell.className = `w-16 h-16 ${colorClass} rounded flex items-center justify-center text-white font-bold text-lg`;
+                    }
+                }
+            }
+            
+            function move2048(direction) {
+                let moved = false;
+                const newGrid = [...grid];
+                
+                // Simple move logic (basic implementation)
+                if (direction === 'LEFT') {
+                    for (let row = 0; row < 4; row++) {
+                        const rowStart = row * 4;
+                        const rowValues = newGrid.slice(rowStart, rowStart + 4).filter(val => val !== 0);
+                        
+                        // Merge tiles
+                        for (let i = 0; i < rowValues.length - 1; i++) {
+                            if (rowValues[i] === rowValues[i + 1]) {
+                                rowValues[i] *= 2;
+                                gameScore += rowValues[i];
+                                rowValues.splice(i + 1, 1);
+                            }
+                        }
+                        
+                        // Fill with zeros
+                        while (rowValues.length < 4) {
+                            rowValues.push(0);
+                        }
+                        
+                        // Update grid
+                        for (let i = 0; i < 4; i++) {
+                            if (newGrid[rowStart + i] !== rowValues[i]) {
+                                moved = true;
+                            }
+                            newGrid[rowStart + i] = rowValues[i];
+                        }
+                    }
+                }
+                
+                if (moved) {
+                    grid = newGrid;
+                    document.getElementById('gameScore').textContent = gameScore;
+                    addNewTile();
+                    updateDisplay();
+                }
+            }
+            
+            // Controls
+            document.addEventListener('keydown', (e) => {
+                if (currentGame !== '2048') return;
+                
+                switch(e.key.toLowerCase()) {
+                    case 'a':
+                    case 'arrowleft':
+                        move2048('LEFT');
+                        break;
+                }
+            });
+            
+            // Start game
+            addNewTile();
+            addNewTile();
+            updateDisplay();
+        }
+        
+        // Memory Game
+        function initMemoryGame() {
+            currentGame = 'memory';
+            document.getElementById('gameTitle').textContent = '🧠 Xotira O\'yini';
+            document.getElementById('gameControls').innerHTML = 'Bir xil kartalarni toping';
+            
+            const symbols = ['🍎', '🍌', '🍇', '🍊', '🍓', '🥝', '🍑', '🥥'];
+            const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+            
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = `
+                <div class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+                    ${cards.map((symbol, i) => `
+                        <div class="memory-card w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center text-2xl cursor-pointer hover:bg-blue-600 transition-colors" 
+                             data-symbol="${symbol}" data-index="${i}" onclick="flipCard(${i})">
+                            <span class="card-back">?</span>
+                            <span class="card-front hidden">${symbol}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            let flippedCards = [];
+            let matchedPairs = 0;
+            
+            window.flipCard = function(index) {
+                const card = document.querySelector(`[data-index="${index}"]`);
+                if (flippedCards.length >= 2 || card.classList.contains('matched')) return;
+                
+                card.querySelector('.card-back').classList.add('hidden');
+                card.querySelector('.card-front').classList.remove('hidden');
+                card.classList.add('flipped');
+                
+                flippedCards.push({index, symbol: card.dataset.symbol, element: card});
+                
+                if (flippedCards.length === 2) {
+                    setTimeout(() => {
+                        if (flippedCards[0].symbol === flippedCards[1].symbol) {
+                            flippedCards[0].element.classList.add('matched', 'bg-green-500');
+                            flippedCards[1].element.classList.add('matched', 'bg-green-500');
+                            matchedPairs++;
+                            gameScore += 10;
+                            document.getElementById('gameScore').textContent = gameScore;
+                            
+                            if (matchedPairs === 8) {
+                                setTimeout(() => alert('Tabriklaymiz! O\'yin tugadi!'), 500);
+                            }
+                        } else {
+                            flippedCards.forEach(card => {
+                                card.element.querySelector('.card-back').classList.remove('hidden');
+                                card.element.querySelector('.card-front').classList.add('hidden');
+                                card.element.classList.remove('flipped');
+                            });
+                        }
+                        flippedCards = [];
+                    }, 1000);
+                }
+            };
+        }
     </script>
 </body>
 </html>
