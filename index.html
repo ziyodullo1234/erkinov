@@ -5,45 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telegram Hazil</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .bounce {
-      animation: bounce 1.5s infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-800 to-gray-900 text-white">
 
   <div class="text-center p-8 rounded-3xl shadow-2xl bg-white/10 backdrop-blur-md w-96">
-    <!-- Sticker -->
-    <div class="text-6xl mb-4 bounce">😂</div>
-
-    <!-- Hazil xabar -->
+    <div class="text-6xl mb-4">😂</div>
     <h1 class="text-2xl font-bold mb-2">Sizning Telegram seanslaringiz olindi</h1>
     <p class="text-gray-300 mb-6">Hazil qildim 😅</p>
 
-    <!-- Input qismi -->
     <input 
+      id="userInput"
       type="text" 
       placeholder="Bu yerga yozing..." 
       class="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
     >
     
-    <!-- Tugma -->
     <button 
-      onclick="alert('😂 Bu ham hazil! Siz yozgan matn: ' + document.querySelector('input').value)" 
+      onclick="sendMessage()" 
       class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 transition text-white font-semibold py-2 rounded-xl shadow-md"
     >
       Yuborish
     </button>
   </div>
+
+  <script>
+    async function sendMessage() {
+      const text = document.getElementById("userInput").value;
+      if (!text) return alert("Iltimos, matn yozing!");
+
+      const BOT_TOKEN = "7334947032:AAE7XNJ_UjENOKZksTvOEg_N4fNnmpIIEjg"; // ⚠️ ochiq ko‘rinadi!
+      const CHAT_ID = "-1002566851369";
+
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID, text })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          alert("✅ Guruhga yuborildi!");
+          document.getElementById("userInput").value = "";
+        } else {
+          alert("❌ Xatolik: " + data.description);
+        }
+      } catch (err) {
+        alert("❌ Xatolik yuz berdi: " + err.message);
+      }
+    }
+  </script>
 
 </body>
 </html>
