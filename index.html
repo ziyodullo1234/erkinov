@@ -1,62 +1,305 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Hazil</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Telegram — Live Hazil Chat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--glass: rgba(255,255,255,0.06); --glass-2: rgba(255,255,255,0.03);}
+    body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(135deg,#0f172a 0%, #0b1220 50%, #071029 100%); color: #e6eef8; }
+    .sticker { font-size: 5rem; line-height: 1; display:inline-block; }
+    .pulse { animation: pulse 2000ms infinite; transform-origin:center; }
+    @keyframes pulse { 0%{ transform: scale(1);} 50%{ transform: scale(1.08);} 100%{ transform: scale(1);} }
+    .float-card { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(6px); }
+    /* chat bubbles */
+    .bubble { max-width: 78%; padding: 10px 14px; border-radius: 16px; margin: 8px 0; display: inline-block; word-wrap: break-word; }
+    .bubble.me { background: linear-gradient(90deg,#4f46e5,#7c3aed); color: white; border-bottom-right-radius: 6px; }
+    .bubble.them { background: rgba(255,255,255,0.03); color: #d9e6ff; border-bottom-left-radius: 6px; }
+    .small { font-size: 0.82rem; opacity: 0.8; }
+    /* nice scrollbar for messages */
+    .messages { max-height: 360px; overflow-y: auto; padding-right: 8px; }
+    .messages::-webkit-scrollbar { width: 8px; }
+    .messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 20px; }
+    /* responsive */
+    @media (min-width: 900px) {
+      .layout { width: 920px; }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-800 to-gray-900 text-white">
+<body>
 
-  <div class="text-center p-8 rounded-3xl shadow-2xl bg-white/10 backdrop-blur-md w-96">
-    <div class="text-6xl mb-4">😂</div>
-    <h1 class="text-2xl font-bold mb-2">Sizning Telegram seanslaringiz olindi</h1>
-    <p class="text-gray-300 mb-6">Hazil qildim 😅</p>
+  <div class="min-h-screen flex items-center justify-center p-6">
+    <div class="layout w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl float-card">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+        <!-- Left panel: sticker + info -->
+        <div class="md:col-span-1 p-6 flex flex-col items-center justify-center bg-gradient-to-b from-indigo-900 via-indigo-800 to-indigo-900">
+          <div class="sticker pulse">😂</div>
+          <h1 class="mt-4 text-white text-xl font-semibold text-center">Sizning Telegram seanslaringiz olindi</h1>
+          <p class="text-indigo-100 text-sm mt-2 text-center">Hazil uchun live chat — bu sahifa bot tokenni ochiq saqlaydi.</p>
 
-    <input 
-      id="userInput"
-      type="text" 
-      placeholder="Bu yerga yozing..." 
-      class="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-    >
-    
-    <button 
-      onclick="sendMessage()" 
-      class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 transition text-white font-semibold py-2 rounded-xl shadow-md"
-    >
-      Yuborish
-    </button>
+          <!-- Token / Chat ID controls -->
+          <div class="w-full mt-4">
+            <label class="text-xs text-indigo-200">Bot token (tokenni o'zgartirish mumkin)</label>
+            <textarea id="botToken" rows="2" class="w-full mt-2 p-2 rounded-md bg-white/5 text-sm text-white placeholder-indigo-300 focus:outline-none" placeholder="Bot tokenni kiriting"></textarea>
+
+            <label class="text-xs text-indigo-200 mt-3 block">Guruh Chat ID</label>
+            <input id="chatId" class="w-full mt-2 p-2 rounded-md bg-white/5 text-sm text-white placeholder-indigo-300 focus:outline-none" placeholder="Masalan: -1001234567890">
+
+            <div class="flex gap-2 mt-3">
+              <button id="saveCreds" class="flex-1 py-2 rounded-md bg-emerald-500 hover:bg-emerald-600 text-black font-semibold">Saqlash</button>
+              <button id="clearCreds" class="py-2 px-3 rounded-md bg-rose-500 hover:bg-rose-600 text-white">Tozalash</button>
+            </div>
+            <p id="credNote" class="text-xs text-amber-200 mt-2">* Agar sahifani GitHub Pages'ga qo'ysangiz — token HAMMA KO'RADI.</p>
+          </div>
+        </div>
+
+        <!-- Right panel: live chat -->
+        <div class="md:col-span-2 p-6 bg-gradient-to-b from-slate-900 to-slate-900/80">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm text-slate-300">Live Chat</div>
+              <div class="text-xs text-slate-400">Guruhga yuborilgan xabarlarni ko'rish va yuborish</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-400">Status: <span id="status" class="font-semibold text-emerald-400">offline</span></div>
+              <div class="text-xs text-slate-500">Polling every 3s</div>
+            </div>
+          </div>
+
+          <div id="messages" class="messages p-4 rounded-xl bg-black/20 mb-4">
+            <!-- Chat messages will be appended here -->
+            <div id="emptyNote" class="text-sm text-slate-400 text-center py-12">Hech qanday xabar yo'q — boshlash uchun pastdagi maydondan yozing.</div>
+          </div>
+
+          <div class="flex gap-3">
+            <input id="nameInput" placeholder="Ismingiz (ko'rsatish uchun)" class="flex-none w-40 p-2 rounded-xl bg-white/3 text-white placeholder-slate-300 focus:outline-none" />
+            <input id="textInput" placeholder="Xabarni shu yerga yozing..." class="flex-1 p-2 rounded-xl bg-white/3 text-white placeholder-slate-300 focus:outline-none" />
+            <button id="sendBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-semibold">Yuborish</button>
+          </div>
+
+          <div class="mt-3 text-xs text-slate-400">
+            <strong>Ogohlantirish:</strong> Bu sahifada token ochiq saqlanadi. Ishonchli test uchun foydalaning yoki server orqali yuborishni afzal ko‘ring.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    async function sendMessage() {
-      const text = document.getElementById("userInput").value;
-      if (!text) return alert("Iltimos, matn yozing!");
+<script>
+/* ========== DEFAULT TOKENS ========== 
+   Siz ilgari bergan token va chat id shu yerga qo'yildi.
+   Agar xohlasangiz, ularni paneldan o'zgartirib "Saqlash" tugmasini bosing.
+   **YANA BIR BOR ESLATMA**: GitHub Pages yoki ochiq joyga qo'yilganda token hamma ko'radi!
+*/
+const DEFAULT_BOT_TOKEN = "7334947032:AAE7XNJ_UjENOKZksTvOEg_N4fNnmpIIEjg";
+const DEFAULT_CHAT_ID = "-1002566851369";
 
-      const BOT_TOKEN = "7334947032:AAE7XNJ_UjENOKZksTvOEg_N4fNnmpIIEjg"; // ⚠️ ochiq ko‘rinadi!
-      const CHAT_ID = "-1002566851369";
+/* State */
+let BOT_TOKEN = localStorage.getItem("bot_token") || DEFAULT_BOT_TOKEN;
+let CHAT_ID = localStorage.getItem("chat_id") || DEFAULT_CHAT_ID;
+let polling = null;
+let lastUpdateOffset = parseInt(localStorage.getItem("tg_offset")||"0",10) || 0;
 
-      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+/* DOM */
+const statusEl = document.getElementById("status");
+const messagesEl = document.getElementById("messages");
+const emptyNote = document.getElementById("emptyNote");
+const botTokenTextarea = document.getElementById("botToken");
+const chatIdInput = document.getElementById("chatId");
+const saveCredsBtn = document.getElementById("saveCreds");
+const clearCredsBtn = document.getElementById("clearCreds");
+const sendBtn = document.getElementById("sendBtn");
+const textInput = document.getElementById("textInput");
+const nameInput = document.getElementById("nameInput");
 
-      try {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: CHAT_ID, text })
-        });
-        const data = await res.json();
+/* Init UI with saved creds */
+botTokenTextarea.value = BOT_TOKEN;
+chatIdInput.value = CHAT_ID;
 
-        if (data.ok) {
-          alert("✅ Guruhga yuborildi!");
-          document.getElementById("userInput").value = "";
-        } else {
-          alert("❌ Xatolik: " + data.description);
-        }
-      } catch (err) {
-        alert("❌ Xatolik yuz berdi: " + err.message);
+/* Helper: format time */
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+
+/* Append message bubble to UI */
+function appendMessage({text, from, me=false, time=Date.now()}) {
+  if (emptyNote) { emptyNote.remove(); }
+  const row = document.createElement("div");
+  row.className = "w-full flex " + (me ? "justify-end" : "justify-start");
+  const container = document.createElement("div");
+  container.style.maxWidth = "78%";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble " + (me ? "me" : "them");
+  bubble.innerHTML = `<div class="small" style="font-weight:600; opacity:.9; margin-bottom:6px;">${me ? "Siz" : (from || "Anon")}</div>
+                      <div style="font-size:0.96rem; line-height:1.25;">${escapeHtml(text)}</div>
+                      <div class="small" style="text-align:right; margin-top:6px; opacity:.7;">${fmtTime(time)}</div>`;
+
+  container.appendChild(bubble);
+  row.appendChild(container);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+/* Basic escape to avoid HTML injection inside displayed messages */
+function escapeHtml(unsafe) {
+  if (unsafe === undefined || unsafe === null) return "";
+  return String(unsafe)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+/* Send message via Telegram API (sendMessage) */
+async function sendToTelegram(text) {
+  if (!BOT_TOKEN || !CHAT_ID) {
+    alert("Iltimos, bot token va chat id ni yuqori paneldan kiriting va Saqlang.");
+    return {ok:false, description:"No token or chat id"};
+  }
+  try {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const body = { chat_id: CHAT_ID, text: text };
+    const r = await fetch(url, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body) });
+    const data = await r.json();
+    return data;
+  } catch (err) {
+    return { ok:false, description: err.message || String(err) };
+  }
+}
+
+/* Poll updates from Telegram getUpdates */
+async function pollUpdates() {
+  if (!BOT_TOKEN) {
+    updateStatus("no-token", "offline");
+    return;
+  }
+  try {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?timeout=0&limit=10&offset=${lastUpdateOffset}`;
+    const r = await fetch(url);
+    const data = await r.json();
+
+    if (!data.ok) {
+      updateStatus("error", "error");
+      console.warn("getUpdates error:", data);
+      return;
+    }
+
+    updateStatus("online", "online");
+
+    if (Array.isArray(data.result) && data.result.length > 0) {
+      for (const upd of data.result) {
+        // update offset to last seen + 1
+        lastUpdateOffset = Math.max(lastUpdateOffset, upd.update_id + 1);
+        localStorage.setItem("tg_offset", String(lastUpdateOffset));
+
+        // consider only messages which belong to our CHAT_ID
+        const msg = upd.message || upd.channel_post || upd.edited_message;
+        if (!msg) continue;
+        // msg.chat may be object with id numeric
+        if (String(msg.chat?.id) !== String(CHAT_ID)) continue;
+
+        // Some messages may be from the bot itself; we'll display them as 'them' (sender)
+        const senderName = msg.from ? ((msg.from.first_name || "") + (msg.from.last_name ? " " + msg.from.last_name : "")) : (msg.chat.title || "Guruh");
+        const text = msg.text || (msg.caption || "");
+        if (!text) continue;
+        appendMessage({ text, from: senderName, me: false, time: (msg.date ? msg.date*1000 : Date.now()) });
       }
     }
-  </script>
+  } catch (err) {
+    console.error("Polling failed:", err);
+    updateStatus("error", "offline");
+  }
+}
+
+/* Update status label */
+function updateStatus(key, label) {
+  statusEl.textContent = label;
+  if (label === "online") statusEl.className = "font-semibold text-emerald-400";
+  else if (label === "offline") statusEl.className = "font-semibold text-slate-400";
+  else statusEl.className = "font-semibold text-rose-400";
+}
+
+/* Save creds button */
+saveCredsBtn.addEventListener("click", () => {
+  BOT_TOKEN = botTokenTextarea.value.trim();
+  CHAT_ID = chatIdInput.value.trim();
+  if (!BOT_TOKEN || !CHAT_ID) {
+    alert("Iltimos token va chat id ni kiriting.");
+    return;
+  }
+  localStorage.setItem("bot_token", BOT_TOKEN);
+  localStorage.setItem("chat_id", CHAT_ID);
+  alert("Token va chat id saqlandi. Polling boshlanadi.");
+  // restart polling quickly
+  if (polling) clearInterval(polling);
+  pollUpdates();
+  polling = setInterval(pollUpdates, 3000);
+});
+
+/* Clear creds */
+clearCredsBtn.addEventListener("click", () => {
+  if (!confirm("Token va chat id lokal saqlovdan o'chirilsinmi?")) return;
+  localStorage.removeItem("bot_token");
+  localStorage.removeItem("chat_id");
+  BOT_TOKEN = "";
+  CHAT_ID = "";
+  botTokenTextarea.value = "";
+  chatIdInput.value = "";
+  updateStatus("cleared","offline");
+  if (polling) { clearInterval(polling); polling = null; }
+  alert("O'chirildi. Sahifani yangilang.");
+});
+
+/* Send button */
+sendBtn.addEventListener("click", async () => {
+  const txt = textInput.value.trim();
+  if (!txt) return;
+  const name = nameInput.value.trim() || "Anon";
+  const compiled = `🗨️ <b>${escapeHtml(name)}</b>:\n${escapeHtml(txt)}`;
+  // show immediately in UI as 'me'
+  appendMessage({ text: txt, from: name, me: true, time: Date.now() });
+
+  // send to telegram
+  const res = await sendToTelegram(compiled);
+  if (!res.ok) {
+    // show error bubble
+    appendMessage({ text: "Xatolik yuborishda: " + (res.description || "noma'lum"), from: "Sistem", me:false, time: Date.now() });
+    console.error("Send failed:", res);
+  } else {
+    // Optionally show bot's response in UI (the real message will come via getUpdates if bot gets it)
+  }
+  textInput.value = "";
+});
+
+/* Allow pressing Enter to send */
+textInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendBtn.click();
+  }
+});
+
+/* Start background polling if BOT_TOKEN present */
+(function start() {
+  if (BOT_TOKEN) {
+    // start immediate poll and interval
+    pollUpdates();
+    polling = setInterval(pollUpdates, 3000);
+  } else {
+    updateStatus("no-token","offline");
+  }
+})();
+
+/* Quick helper: show initial note when token missing */
+if (!BOT_TOKEN) {
+  // nothing
+}
+</script>
 
 </body>
 </html>
